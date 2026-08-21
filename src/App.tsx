@@ -1,8 +1,237 @@
-import { useState } from "react";
-import { Route, Bot, CalendarClock, RefreshCw } from "lucide-react";
+import { useMemo, useState } from "react";
+import {
+  Route,
+  Bot,
+  CalendarClock,
+  RefreshCw,
+  LayoutTemplate,
+  Building2,
+  Newspaper,
+  LayoutDashboard,
+  ShoppingCart,
+  Workflow,
+  Smartphone,
+  ListChecks,
+  Wrench,
+} from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 import KineticGrid from "@/components/ui/kinetic-grid";
-import { FeatureCard } from "@/components/ui/grid-feature-cards";
+import {
+  FeatureCard,
+  GridPattern,
+  genRandomPattern,
+} from "@/components/ui/grid-feature-cards";
+
+const SERVICE_FEATURES = [
+  {
+    title: "Landing page",
+    icon: LayoutTemplate,
+    description:
+      "Una página, un objetivo: que te escriban o te compren. Ideal para lanzar rápido.",
+  },
+  {
+    title: "Sitio institucional",
+    icon: Building2,
+    description:
+      "Quiénes son, qué hacen, dónde están. La carta de presentación de tu negocio.",
+  },
+  {
+    title: "Blog",
+    icon: Newspaper,
+    description:
+      "Artículos organizados, buscador y buena base para que te encuentren en Google.",
+  },
+  {
+    title: "Panel de administrador",
+    icon: LayoutDashboard,
+    description:
+      "Un lugar propio para cargar productos, turnos o novedades sin tocar código.",
+  },
+  {
+    title: "Ecommerce",
+    icon: ShoppingCart,
+    description: "Catálogo, carrito, checkout y stock. Tu vidriera abierta las 24 horas.",
+  },
+  {
+    title: "Sistema a medida",
+    icon: Workflow,
+    description:
+      "Gestión de turnos, pedidos, reservas o lo que tu operación necesite resolver.",
+  },
+  {
+    title: "App a medida",
+    icon: Smartphone,
+    description: "Una herramienta propia, pensada para cómo trabajás vos y tu equipo.",
+  },
+  {
+    title: "Consultoría de procesos",
+    icon: ListChecks,
+    description:
+      "Relevamos cómo trabaja tu equipo hoy y ordenamos lo que se puede simplificar o digitalizar.",
+  },
+  {
+    title: "Mantenimiento mensual",
+    icon: Wrench,
+    description:
+      "Cambios, contenido al día y que el sitio nunca se caiga. Vos avisás, nosotros lo resolvemos.",
+  },
+];
+
+function ServiceFeatureGrid() {
+  const shouldReduceMotion = useReducedMotion();
+  const grid = (
+    <div className="feature-grid services-grid grid grid-cols-1 divide-x divide-y divide-dashed border border-dashed sm:grid-cols-2 md:grid-cols-3">
+      {SERVICE_FEATURES.map((feature) => (
+        <FeatureCard key={feature.title} feature={feature} />
+      ))}
+    </div>
+  );
+
+  if (shouldReduceMotion) return grid;
+
+  return (
+    <motion.div
+      initial={{ filter: "blur(4px)", translateY: -8, opacity: 0 }}
+      whileInView={{ filter: "blur(0px)", translateY: 0, opacity: 1 }}
+      viewport={{ once: true }}
+      transition={{ delay: 0.2, duration: 0.8 }}
+    >
+      {grid}
+    </motion.div>
+  );
+}
+
+type FichaData = {
+  href: string;
+  rubro: string;
+  color: string;
+  index: string;
+  title: string;
+  description: string;
+};
+
+const CATALOG: FichaData[] = [
+  {
+    href: "https://gastronomia-demo.vercel.app/",
+    rubro: "Gastronomía",
+    color: "var(--stamp-red)",
+    index: "RUBRO 01",
+    title: "Restaurantes y bares",
+    description:
+      "Carta online, fotos que dan hambre y reserva de mesa por WhatsApp en dos toques.",
+  },
+  {
+    href: "https://corralon-demo.vercel.app/",
+    rubro: "Corralón / Ferretería",
+    color: "var(--stamp-blue)",
+    index: "RUBRO 02",
+    title: "Materiales y ferretería",
+    description:
+      "Catálogo por categorías, precios claros y pedidos que llegan directo por WhatsApp.",
+  },
+  {
+    href: "https://gym-demo-ten-rosy.vercel.app/",
+    rubro: "Gimnasio",
+    color: "var(--stamp-mustard)",
+    index: "RUBRO 03",
+    title: "Gimnasios y boxes",
+    description:
+      "Planes, horarios de clases y alta de socios nuevos sin planillas ni vueltas.",
+  },
+  {
+    href: "https://mecanico-demo.vercel.app/",
+    rubro: "Mecánico",
+    color: "var(--stamp-teal)",
+    index: "RUBRO 04",
+    title: "Talleres mecánicos",
+    description:
+      "Servicios, turnos y presupuesto rápido para que el cliente no tenga que llamar.",
+  },
+  {
+    href: "https://salon-demo-web-tau.vercel.app/",
+    rubro: "Salón / Belleza",
+    color: "var(--stamp-red)",
+    index: "RUBRO 05",
+    title: "Peluquerías y estética",
+    description:
+      "Reserva de turnos, galería de trabajos y contacto directo con la profesional.",
+  },
+  {
+    href: "https://liliana-m-carro.vercel.app/",
+    rubro: "Ecommerce",
+    color: "var(--stamp-blue)",
+    index: "RUBRO 06",
+    title: "Tienda online",
+    description:
+      "Catálogo, carrito y checkout completo. Para marcas que quieren vender online en serio.",
+  },
+  {
+    href: "https://djs-demo.vercel.app/",
+    rubro: "DJ / Eventos",
+    color: "var(--stamp-mustard)",
+    index: "RUBRO 07",
+    title: "DJs y música en vivo",
+    description:
+      "Portfolio de sets, disponibilidad de fechas y cotización de eventos directo por WhatsApp.",
+  },
+];
+
+function FichaCard({ href, rubro, color, index, title, description }: FichaData) {
+  const pattern = useMemo(() => genRandomPattern(), []);
+
+  return (
+    <a className="ficha" href={href} target="_blank" rel="noopener noreferrer">
+      <div className="ficha-pattern" aria-hidden="true">
+        <div className="ficha-pattern-fade">
+          <GridPattern
+            width={20}
+            height={20}
+            x="-12"
+            y="4"
+            squares={pattern}
+            className="ficha-pattern-svg"
+          />
+        </div>
+      </div>
+      <div className="ficha-top">
+        <span className="stamp" style={{ color }}>
+          {rubro}
+        </span>
+        <span className="ficha-index mono">{index}</span>
+      </div>
+      <h3>{title}</h3>
+      <p>{description}</p>
+      <div className="ficha-cta">
+        <span>Ver demo</span>
+        <span className="arrow">→</span>
+      </div>
+    </a>
+  );
+}
+
+function CatalogGrid() {
+  const shouldReduceMotion = useReducedMotion();
+  const grid = (
+    <div className="feature-grid catalog-grid grid grid-cols-1 divide-x divide-y divide-dashed border border-dashed sm:grid-cols-2 lg:grid-cols-3">
+      {CATALOG.map((item) => (
+        <FichaCard key={item.href} {...item} />
+      ))}
+    </div>
+  );
+
+  if (shouldReduceMotion) return grid;
+
+  return (
+    <motion.div
+      initial={{ filter: "blur(4px)", translateY: -8, opacity: 0 }}
+      whileInView={{ filter: "blur(0px)", translateY: 0, opacity: 1 }}
+      viewport={{ once: true }}
+      transition={{ delay: 0.2, duration: 0.8 }}
+    >
+      {grid}
+    </motion.div>
+  );
+}
 
 const AUTO_FEATURES = [
   {
@@ -30,7 +259,7 @@ const AUTO_FEATURES = [
 function AutoFeatureGrid() {
   const shouldReduceMotion = useReducedMotion();
   const grid = (
-    <div className="auto-grid grid grid-cols-1 divide-x divide-y divide-dashed border border-dashed sm:grid-cols-2">
+    <div className="feature-grid auto-grid grid grid-cols-1 divide-x divide-y divide-dashed border border-dashed sm:grid-cols-2">
       {AUTO_FEATURES.map((feature) => (
         <FeatureCard key={feature.title} feature={feature} />
       ))}
@@ -123,74 +352,7 @@ export default function App() {
               necesita, no al revés.
             </p>
           </div>
-          <div className="services">
-            <div className="service">
-              <span className="code mono">LP · 01</span>
-              <h3>Landing page</h3>
-              <p>
-                Una página, un objetivo: que te escriban o te compren. Ideal
-                para lanzar rápido.
-              </p>
-            </div>
-            <div className="service">
-              <span className="code mono">IN · 02</span>
-              <h3>Sitio institucional</h3>
-              <p>
-                Quiénes son, qué hacen, dónde están. La carta de presentación
-                de tu negocio.
-              </p>
-            </div>
-            <div className="service">
-              <span className="code mono">BL · 03</span>
-              <h3>Blog</h3>
-              <p>
-                Artículos organizados, buscador y buena base para que te
-                encuentren en Google.
-              </p>
-            </div>
-            <div className="service">
-              <span className="code mono">PA · 04</span>
-              <h3>Panel de administrador</h3>
-              <p>
-                Un lugar propio para cargar productos, turnos o novedades sin
-                tocar código.
-              </p>
-            </div>
-            <div className="service">
-              <span className="code mono">EC · 05</span>
-              <h3>Ecommerce</h3>
-              <p>Catálogo, carrito, checkout y stock. Tu vidriera abierta las 24 horas.</p>
-            </div>
-            <div className="service">
-              <span className="code mono">SI · 06</span>
-              <h3>Sistema a medida</h3>
-              <p>
-                Gestión de turnos, pedidos, reservas o lo que tu operación
-                necesite resolver.
-              </p>
-            </div>
-            <div className="service">
-              <span className="code mono">AP · 07</span>
-              <h3>App a medida</h3>
-              <p>Una herramienta propia, pensada para cómo trabajás vos y tu equipo.</p>
-            </div>
-            <div className="service">
-              <span className="code mono">CO · 08</span>
-              <h3>Consultoría de procesos</h3>
-              <p>
-                Relevamos cómo trabaja tu equipo hoy y ordenamos lo que se
-                puede simplificar o digitalizar.
-              </p>
-            </div>
-            <div className="service">
-              <span className="code mono">MT · 09</span>
-              <h3>Mantenimiento mensual</h3>
-              <p>
-                Cambios, contenido al día y que el sitio nunca se caiga. Vos
-                avisás, nosotros lo resolvemos.
-              </p>
-            </div>
-          </div>
+          <ServiceFeatureGrid />
         </section>
 
         <section className="wrap" id="catalogo">
@@ -202,168 +364,7 @@ export default function App() {
               y si algo se parece a lo que necesitás, hablamos.
             </p>
           </div>
-          <div className="catalog">
-            <a
-              className="ficha"
-              href="https://gastronomia-demo.vercel.app/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <div className="ficha-top">
-                <span className="stamp" style={{ color: "var(--stamp-red)" }}>
-                  Gastronomía
-                </span>
-                <span className="ficha-index mono">RUBRO 01</span>
-              </div>
-              <h3>Restaurantes y bares</h3>
-              <p>
-                Carta online, fotos que dan hambre y reserva de mesa por
-                WhatsApp en dos toques.
-              </p>
-              <div className="ficha-cta">
-                <span>Ver demo</span>
-                <span className="arrow">→</span>
-              </div>
-            </a>
-
-            <a
-              className="ficha"
-              href="https://corralon-demo.vercel.app/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <div className="ficha-top">
-                <span className="stamp" style={{ color: "var(--stamp-blue)" }}>
-                  Corralón / Ferretería
-                </span>
-                <span className="ficha-index mono">RUBRO 02</span>
-              </div>
-              <h3>Materiales y ferretería</h3>
-              <p>
-                Catálogo por categorías, precios claros y pedidos que llegan
-                directo por WhatsApp.
-              </p>
-              <div className="ficha-cta">
-                <span>Ver demo</span>
-                <span className="arrow">→</span>
-              </div>
-            </a>
-
-            <a
-              className="ficha"
-              href="https://gym-demo-ten-rosy.vercel.app/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <div className="ficha-top">
-                <span className="stamp" style={{ color: "var(--stamp-mustard)" }}>
-                  Gimnasio
-                </span>
-                <span className="ficha-index mono">RUBRO 03</span>
-              </div>
-              <h3>Gimnasios y boxes</h3>
-              <p>
-                Planes, horarios de clases y alta de socios nuevos sin
-                planillas ni vueltas.
-              </p>
-              <div className="ficha-cta">
-                <span>Ver demo</span>
-                <span className="arrow">→</span>
-              </div>
-            </a>
-
-            <a
-              className="ficha"
-              href="https://mecanico-demo.vercel.app/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <div className="ficha-top">
-                <span className="stamp" style={{ color: "var(--stamp-teal)" }}>
-                  Mecánico
-                </span>
-                <span className="ficha-index mono">RUBRO 04</span>
-              </div>
-              <h3>Talleres mecánicos</h3>
-              <p>
-                Servicios, turnos y presupuesto rápido para que el cliente no
-                tenga que llamar.
-              </p>
-              <div className="ficha-cta">
-                <span>Ver demo</span>
-                <span className="arrow">→</span>
-              </div>
-            </a>
-
-            <a
-              className="ficha"
-              href="https://salon-demo-web-tau.vercel.app/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <div className="ficha-top">
-                <span className="stamp" style={{ color: "var(--stamp-red)" }}>
-                  Salón / Belleza
-                </span>
-                <span className="ficha-index mono">RUBRO 05</span>
-              </div>
-              <h3>Peluquerías y estética</h3>
-              <p>
-                Reserva de turnos, galería de trabajos y contacto directo con
-                la profesional.
-              </p>
-              <div className="ficha-cta">
-                <span>Ver demo</span>
-                <span className="arrow">→</span>
-              </div>
-            </a>
-
-            <a
-              className="ficha"
-              href="https://liliana-m-carro.vercel.app/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <div className="ficha-top">
-                <span className="stamp" style={{ color: "var(--stamp-blue)" }}>
-                  Ecommerce
-                </span>
-                <span className="ficha-index mono">RUBRO 06</span>
-              </div>
-              <h3>Tienda online</h3>
-              <p>
-                Catálogo, carrito y checkout completo. Para marcas que
-                quieren vender online en serio.
-              </p>
-              <div className="ficha-cta">
-                <span>Ver demo</span>
-                <span className="arrow">→</span>
-              </div>
-            </a>
-
-            <a
-              className="ficha"
-              href="https://djs-demo.vercel.app/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <div className="ficha-top">
-                <span className="stamp" style={{ color: "var(--stamp-mustard)" }}>
-                  DJ / Eventos
-                </span>
-                <span className="ficha-index mono">RUBRO 07</span>
-              </div>
-              <h3>DJs y música en vivo</h3>
-              <p>
-                Portfolio de sets, disponibilidad de fechas y cotización de
-                eventos directo por WhatsApp.
-              </p>
-              <div className="ficha-cta">
-                <span>Ver demo</span>
-                <span className="arrow">→</span>
-              </div>
-            </a>
-          </div>
+          <CatalogGrid />
         </section>
 
         <section className="wrap" id="automatizaciones">
