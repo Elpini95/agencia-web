@@ -294,7 +294,7 @@ export default function App() {
             <span className="brand-mark" aria-hidden="true">
               ＋
             </span>
-            AGENCIA WEB
+            LUMA
           </a>
           <a
             className="btn btn-ghost"
@@ -313,13 +313,7 @@ export default function App() {
             Agencia de desarrollo web &amp; consultoría de procesos
           </p>
           <h1>
-            Un sitio distinto
-            <br />
-            para cada <em>rubro.</em>
-            <br />
-            Elegí el que se
-            <br />
-            parece al tuyo.
+            Hacemos <em>visible</em> lo que tu negocio tiene para ofrecer
           </h1>
           <p className="hero-sub">
             Diseño y desarrollo de páginas, tiendas online y sistemas a
