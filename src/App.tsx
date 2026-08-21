@@ -1,5 +1,55 @@
 import { useState } from "react";
+import { Route, Bot, CalendarClock, RefreshCw } from "lucide-react";
+import { motion, useReducedMotion } from "motion/react";
 import KineticGrid from "@/components/ui/kinetic-grid";
+import { FeatureCard } from "@/components/ui/grid-feature-cards";
+
+const AUTO_FEATURES = [
+  {
+    title: "Relevamiento",
+    icon: Route,
+    description: "Cómo se hacen las cosas hoy, paso a paso.",
+  },
+  {
+    title: "Chatbot IA",
+    icon: Bot,
+    description: "Responde consultas frecuentes y toma pedidos las 24 horas.",
+  },
+  {
+    title: "Agenda automática",
+    icon: CalendarClock,
+    description: "Integrada a WhatsApp o al sitio, sin cruces de turnos.",
+  },
+  {
+    title: "Automatización",
+    icon: RefreshCw,
+    description: "Avisos y seguimientos que hoy se hacen a mano, resueltos solos.",
+  },
+];
+
+function AutoFeatureGrid() {
+  const shouldReduceMotion = useReducedMotion();
+  const grid = (
+    <div className="auto-grid grid grid-cols-1 divide-x divide-y divide-dashed border border-dashed sm:grid-cols-2">
+      {AUTO_FEATURES.map((feature) => (
+        <FeatureCard key={feature.title} feature={feature} />
+      ))}
+    </div>
+  );
+
+  if (shouldReduceMotion) return grid;
+
+  return (
+    <motion.div
+      initial={{ filter: "blur(4px)", translateY: -8, opacity: 0 }}
+      whileInView={{ filter: "blur(0px)", translateY: 0, opacity: 1 }}
+      viewport={{ once: true }}
+      transition={{ delay: 0.2, duration: 0.8 }}
+    >
+      {grid}
+    </motion.div>
+  );
+}
 
 const WHATSAPP_URL =
   "https://wa.me/5491130358596?text=Hola!%20Vi%20la%20p%C3%A1gina%20y%20quiero%20hacer%20una%20consulta%20para%20mi%20negocio.";
@@ -330,56 +380,7 @@ export default function App() {
                 artificial.
               </p>
             </div>
-            <ul className="auto-list">
-              <li>
-                <span className="auto-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="5" cy="18" r="2.1" />
-                    <circle cx="12" cy="11" r="2.1" />
-                    <circle cx="19" cy="5" r="2.1" />
-                    <path d="M7 16.4 10 12.6" />
-                    <path d="M14 9.4 17 6.6" />
-                  </svg>
-                </span>
-                <p>Relevamiento de cómo se hacen las cosas hoy, paso a paso.</p>
-              </li>
-              <li>
-                <span className="auto-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M4 5.5h16v10H10l-4 3.5v-3.5H4z" />
-                    <path
-                      d="M12 7.6 12.9 9.7 15 10.6 12.9 11.5 12 13.6 11.1 11.5 9 10.6 11.1 9.7Z"
-                      fill="currentColor"
-                      stroke="none"
-                    />
-                  </svg>
-                </span>
-                <p>Chatbot que responde consultas frecuentes y toma pedidos las 24 horas.</p>
-              </li>
-              <li>
-                <span className="auto-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="4" y="5.5" width="16" height="14" rx="1.5" />
-                    <path d="M4 9.5h16" />
-                    <path d="M8 3.5v4M16 3.5v4" />
-                    <circle cx="15.3" cy="14.3" r="3" />
-                    <path d="M15.3 12.8v1.5l1.1.9" strokeWidth="1.3" />
-                  </svg>
-                </span>
-                <p>Agenda de turnos automática, integrada a WhatsApp o al sitio.</p>
-              </li>
-              <li>
-                <span className="auto-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M5 12a7 7 0 0 1 12-5" />
-                    <path d="M19 12a7 7 0 0 1-12 5" />
-                    <path d="M17 4.3v3h-3" />
-                    <path d="M7 19.7v-3h3" />
-                  </svg>
-                </span>
-                <p>Avisos, seguimientos y pedidos que hoy se hacen a mano, resueltos solos.</p>
-              </li>
-            </ul>
+            <AutoFeatureGrid />
           </div>
         </section>
 
