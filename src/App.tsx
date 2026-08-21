@@ -313,6 +313,29 @@ export default function App() {
                 <span className="arrow">→</span>
               </div>
             </a>
+
+            <a
+              className="ficha"
+              href="https://djs-demo.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <div className="ficha-top">
+                <span className="stamp" style={{ color: "var(--stamp-mustard)" }}>
+                  DJ / Eventos
+                </span>
+                <span className="ficha-index mono">RUBRO 07</span>
+              </div>
+              <h3>DJs y música en vivo</h3>
+              <p>
+                Portfolio de sets, disponibilidad de fechas y cotización de
+                eventos directo por WhatsApp.
+              </p>
+              <div className="ficha-cta">
+                <span>Ver demo</span>
+                <span className="arrow">→</span>
+              </div>
+            </a>
           </div>
         </section>
 
