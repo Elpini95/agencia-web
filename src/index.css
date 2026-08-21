@@ -355,7 +355,7 @@ h2{
   gap:24px;
   flex-wrap:wrap;
 }
-.cta-block h2{ max-width:14ch; }
+.cta-block h2{ max-width:22ch; }
 .cta-block .btn{ font-size:15px; padding:16px 28px; }
 
 footer{ padding:36px 0 48px; }

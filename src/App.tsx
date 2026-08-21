@@ -354,7 +354,7 @@ export default function App() {
         <section className="wrap cta-block">
           <div>
             <p className="section-num">03 — Contacto</p>
-            <h2>¿A cuál se parece tu negocio?</h2>
+            <h2>Contanos tu idea y nosotros armamos tu sistema.</h2>
           </div>
           <a
             className="btn btn-solid"
