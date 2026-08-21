@@ -306,41 +306,50 @@ h2{
 
 /* ---------- automations ---------- */
 .auto-panel{
-  background:var(--ink);
-  color:var(--paper);
+  background:var(--paper-card);
+  color:var(--ink);
+  border:1px solid var(--line-strong);
   border-radius:3px;
   padding:clamp(32px, 5vw, 52px);
   display:grid;
   grid-template-columns:1.1fr 1fr;
   gap:clamp(28px, 5vw, 56px);
   align-items:center;
+  box-shadow:var(--shadow);
 }
 @media (max-width: 760px){ .auto-panel{ grid-template-columns:1fr; } }
 .auto-panel .eyebrow{ color:var(--stamp-teal); }
 .auto-panel .eyebrow::before{ background:var(--stamp-teal); }
-.auto-panel h2{ color:var(--paper); margin-bottom:14px; }
-.auto-panel p{ color:color-mix(in srgb, var(--paper) 78%, transparent); font-size:15px; max-width:46ch; }
-.auto-list{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:14px; }
+.auto-panel h2{ color:var(--ink); margin-bottom:14px; }
+.auto-panel p{ color:var(--ink-soft); font-size:15px; max-width:46ch; }
+.auto-list{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:12px; }
 .auto-list li{
   display:flex;
-  gap:12px;
+  gap:14px;
   align-items:flex-start;
   font-size:14.5px;
-  color:color-mix(in srgb, var(--paper) 90%, transparent);
+  color:var(--ink-soft);
   padding:14px 16px;
-  border:1px solid color-mix(in srgb, var(--paper) 20%, transparent);
+  border:1px solid var(--line);
   border-radius:2px;
+  background:var(--paper);
 }
-.auto-list .tag{
-  font-family:"IBM Plex Mono", monospace;
-  font-size:10.5px;
-  color:var(--stamp-teal);
-  border:1px solid var(--stamp-teal);
-  border-radius:3px;
-  padding:2px 6px;
+.auto-list li p{ margin:0; padding-top:2px; }
+.auto-icon{
   flex-shrink:0;
-  margin-top:1px;
+  width:38px;
+  height:38px;
+  display:grid;
+  place-items:center;
+  border:1.5px solid var(--stamp-teal);
+  border-radius:50%;
+  color:var(--stamp-teal);
 }
+.auto-icon svg{ width:19px; height:19px; }
+.auto-list li:nth-child(1) .auto-icon{ transform:rotate(-6deg); }
+.auto-list li:nth-child(2) .auto-icon{ transform:rotate(4deg); }
+.auto-list li:nth-child(3) .auto-icon{ transform:rotate(-3deg); }
+.auto-list li:nth-child(4) .auto-icon{ transform:rotate(5deg); }
 
 /* ---------- cta / footer ---------- */
 .cta-block{
