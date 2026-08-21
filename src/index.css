@@ -155,71 +155,12 @@ h1 em{
 }
 .hero-ctas .btn{ font-size:14px; padding:14px 24px; }
 
-.index-strip{
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px 10px;
-  padding-top:26px;
-  border-top:1px dashed var(--line-strong);
-}
-.index-strip span.label{
-  font-family:"IBM Plex Mono", monospace;
-  font-size:11.5px;
-  color:var(--ink-soft);
-  text-transform:uppercase;
-  letter-spacing:0.1em;
-  align-self:center;
-  margin-right:4px;
-}
-.chip{
-  font-family:"IBM Plex Mono", monospace;
-  font-size:12px;
-  padding:6px 11px;
-  border:1px solid var(--line-strong);
-  border-radius:999px;
-  color:var(--ink-soft);
-  background:var(--paper-card);
-}
-
-.stamp-deco{
-  position:absolute;
-  right:clamp(6px, 3vw, 40px);
-  top:clamp(46px, 8vw, 96px);
-  width:118px;
-  height:118px;
-  border:2.5px solid var(--stamp-blue);
-  border-radius:50%;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  transform:rotate(-12deg);
-  color:var(--stamp-blue);
-  font-family:"IBM Plex Mono", monospace;
-  font-size:11px;
-  font-weight:600;
-  letter-spacing:0.06em;
-  text-transform:uppercase;
-  line-height:1.5;
-  opacity:0.85;
-}
-.stamp-deco::before{
-  content:"";
-  position:absolute;
-  inset:8px;
-  border:1px solid var(--stamp-blue);
-  border-radius:50%;
-}
-@media (min-width:860px){ .stamp-deco{ display:flex; } }
-
 /* ---------- section shell ---------- */
 section{ padding:clamp(52px, 8vw, 88px) 0; }
 .section-head{
   display:flex;
-  justify-content:space-between;
-  align-items:flex-end;
-  gap:24px;
-  flex-wrap:wrap;
+  flex-direction:column;
+  gap:14px;
   margin-bottom:clamp(32px, 5vw, 48px);
   border-bottom:1px solid var(--line-strong);
   padding-bottom:18px;
@@ -241,9 +182,9 @@ h2{
   text-wrap:balance;
 }
 .section-note{
-  max-width:34ch;
-  font-size:14.5px;
-  color:var(--ink-soft);
+  max-width:56ch;
+  font-size:clamp(15px, 1.6vw, 17px);
+  color:var(--ink);
   margin:0;
 }
 

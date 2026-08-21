@@ -30,13 +30,6 @@ export default function App() {
 
       <main id="top">
         <section className="hero wrap">
-          <div className="stamp-deco">
-            100%
-            <br />
-            a medida
-            <br />
-            sin plantillas
-          </div>
           <p className="eyebrow">
             Agencia de desarrollo web &amp; consultoría de procesos
           </p>
@@ -68,26 +61,12 @@ export default function App() {
               Ver el catálogo de demos
             </a>
           </div>
-          <div className="index-strip">
-            <span className="label">Se hace:</span>
-            <span className="chip">Landing page</span>
-            <span className="chip">Sitio institucional</span>
-            <span className="chip">Blog</span>
-            <span className="chip">Panel de administrador</span>
-            <span className="chip">Ecommerce</span>
-            <span className="chip">Sistema a medida</span>
-            <span className="chip">App a medida</span>
-            <span className="chip">Consultoría de procesos</span>
-            <span className="chip">Mantenimiento mensual</span>
-          </div>
         </section>
 
         <section className="wrap" id="servicios">
           <div className="section-head">
-            <div>
-              <p className="section-num">01 — Servicios</p>
-              <h2>Lo que hacemos</h2>
-            </div>
+            <p className="section-num">01 — Servicios</p>
+            <h2>Lo que hacemos</h2>
             <p className="section-note">
               Desde una landing de una sola pantalla hasta un sistema con
               login y base de datos. Se define según lo que tu negocio
@@ -166,10 +145,8 @@ export default function App() {
 
         <section className="wrap" id="catalogo">
           <div className="section-head">
-            <div>
-              <p className="section-num">02 — Catálogo</p>
-              <h2>Demos por rubro</h2>
-            </div>
+            <p className="section-num">02 — Catálogo</p>
+            <h2>Demos por rubro</h2>
             <p className="section-note">
               Cada ficha abre un sitio real y funcionando. Entrá, recorrelo,
               y si algo se parece a lo que necesitás, hablamos.
