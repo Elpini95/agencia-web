@@ -43,7 +43,8 @@ img{ max-width:100%; display:block; }
 .wrap{
   max-width:1120px;
   margin:0 auto;
-  padding:0 clamp(18px, 4vw, 48px);
+  padding-left:clamp(18px, 4vw, 48px);
+  padding-right:clamp(18px, 4vw, 48px);
 }
 
 .mono{ font-family:"IBM Plex Mono", ui-monospace, SFMono-Regular, monospace; }
