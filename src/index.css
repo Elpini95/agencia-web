@@ -10,6 +10,7 @@
   --petroleo:#164A5A;
   --celeste:#8FC9D6;
   --arena:#E8E1D3;
+  --arena-card:#E5D4A2;
   --blanco:#F8FAFA;
 
   --paper:var(--marino);
@@ -179,7 +180,7 @@ section{ padding:clamp(52px, 8vw, 88px) 0; }
 .section-num{
   font-family:"IBM Plex Mono", monospace;
   font-size:12.5px;
-  color:var(--marino);
+  color:var(--celeste);
   letter-spacing:0.1em;
   text-transform:uppercase;
   margin:0 0 8px;
@@ -207,7 +208,7 @@ h2{
 .section-note{
   max-width:56ch;
   font-size:clamp(15px, 1.6vw, 17px);
-  color:var(--petroleo);
+  color:var(--ink);
   margin:0;
 }
 
@@ -221,18 +222,14 @@ h2{
   color:var(--ink);
 }
 
-/* Servicios and Catálogo sit on arena panels instead of the dark page bg */
-#servicios, #catalogo{
-  background:var(--arena);
-  color:var(--marino);
-  border-radius:4px;
-}
-.services-grid, .catalog-grid{
-  background:var(--arena);
+/* Page background stays uniform dark — only each individual tile/ficha
+   ("el cuadrado") gets the arena-card color, not the section around it. */
+.service-tile{
+  background:var(--arena-card);
   --color-foreground:var(--marino);
   --color-muted-foreground:var(--petroleo);
 }
-.services-grid h3, .catalog-grid h3{ color:var(--marino); }
+.service-tile h3{ color:var(--marino); }
 .catalog-grid{
   --stamp-red:color-mix(in srgb, var(--celeste) 55%, var(--marino) 45%);
   --stamp-blue:color-mix(in srgb, var(--celeste) 35%, var(--marino) 65%);
@@ -244,17 +241,16 @@ h2{
 .ficha{
   position:relative;
   padding:24px 22px 22px;
+  background:var(--arena-card);
+  color:var(--marino);
   text-decoration:none;
-  color:var(--ink);
   display:flex;
   flex-direction:column;
   gap:16px;
   transition:background-color .18s ease;
 }
-.ficha:hover, .ficha:focus-visible{ background:var(--paper-card); }
-.catalog-grid .ficha{ color:var(--marino); }
-.catalog-grid .ficha:hover, .catalog-grid .ficha:focus-visible{
-  background:color-mix(in srgb, var(--arena) 80%, var(--marino) 20%);
+.ficha:hover, .ficha:focus-visible{
+  background:color-mix(in srgb, var(--arena-card) 80%, var(--marino) 20%);
 }
 .catalog-grid .ficha-pattern-svg{
   fill:color-mix(in srgb, var(--marino) 5%, transparent);
@@ -318,6 +314,7 @@ h2{
   font-size:24px;
   margin:0;
   line-height:1.05;
+  color:var(--marino);
 }
 .ficha p{
   position:relative;

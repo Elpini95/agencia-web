@@ -82,7 +82,7 @@ function ServiceFeatureGrid() {
   const grid = (
     <div className="feature-grid services-grid grid grid-cols-1 divide-x divide-y divide-dashed border border-dashed sm:grid-cols-2 md:grid-cols-3">
       {SERVICE_FEATURES.map((feature) => (
-        <FeatureCard key={feature.title} feature={feature} />
+        <FeatureCard key={feature.title} feature={feature} className="service-tile" />
       ))}
     </div>
   );
