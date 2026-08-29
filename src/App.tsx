@@ -174,6 +174,15 @@ const CATALOG: FichaData[] = [
     description:
       "Portfolio de sets, disponibilidad de fechas y cotización de eventos directo por WhatsApp.",
   },
+  {
+    href: "https://crm-fjoralabs.vercel.app/",
+    rubro: "CRM",
+    color: "var(--stamp-teal)",
+    index: "RUBRO 08",
+    title: "Gestión de clientes",
+    description:
+      "Contactos, oportunidades y seguimiento de ventas en un solo lugar, sin perder el hilo de ningún cliente.",
+  },
 ];
 
 function FichaCard({ href, rubro, color, index, title, description }: FichaData) {

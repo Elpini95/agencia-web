@@ -179,7 +179,7 @@ section{ padding:clamp(52px, 8vw, 88px) 0; }
 .section-num{
   font-family:"IBM Plex Mono", monospace;
   font-size:12.5px;
-  color:var(--celeste);
+  color:var(--marino);
   letter-spacing:0.1em;
   text-transform:uppercase;
   margin:0 0 8px;
@@ -195,7 +195,6 @@ section{ padding:clamp(52px, 8vw, 88px) 0; }
   display:inline-block;
   flex-shrink:0;
 }
-#catalogo .section-num{ color:var(--arena); }
 .cta-block .section-num{ color:var(--petroleo); }
 h2{
   font-family:"Big Shoulders Display", ui-sans-serif, sans-serif;
@@ -208,7 +207,7 @@ h2{
 .section-note{
   max-width:56ch;
   font-size:clamp(15px, 1.6vw, 17px);
-  color:var(--ink);
+  color:var(--petroleo);
   margin:0;
 }
 
@@ -220,6 +219,25 @@ h2{
   font-weight:700;
   letter-spacing:-0.005em;
   color:var(--ink);
+}
+
+/* Servicios and Catálogo sit on arena panels instead of the dark page bg */
+#servicios, #catalogo{
+  background:var(--arena);
+  color:var(--marino);
+  border-radius:4px;
+}
+.services-grid, .catalog-grid{
+  background:var(--arena);
+  --color-foreground:var(--marino);
+  --color-muted-foreground:var(--petroleo);
+}
+.services-grid h3, .catalog-grid h3{ color:var(--marino); }
+.catalog-grid{
+  --stamp-red:color-mix(in srgb, var(--celeste) 55%, var(--marino) 45%);
+  --stamp-blue:color-mix(in srgb, var(--celeste) 35%, var(--marino) 65%);
+  --stamp-mustard:var(--marino);
+  --stamp-teal:var(--petroleo);
 }
 
 /* ---------- demo catalog ---------- */
@@ -234,6 +252,16 @@ h2{
   transition:background-color .18s ease;
 }
 .ficha:hover, .ficha:focus-visible{ background:var(--paper-card); }
+.catalog-grid .ficha{ color:var(--marino); }
+.catalog-grid .ficha:hover, .catalog-grid .ficha:focus-visible{
+  background:color-mix(in srgb, var(--arena) 80%, var(--marino) 20%);
+}
+.catalog-grid .ficha-pattern-svg{
+  fill:color-mix(in srgb, var(--marino) 5%, transparent);
+  stroke:color-mix(in srgb, var(--marino) 20%, transparent);
+}
+.catalog-grid .ficha-index,
+.catalog-grid .ficha p{ color:var(--petroleo); }
 .ficha-pattern{
   pointer-events:none;
   position:absolute;
