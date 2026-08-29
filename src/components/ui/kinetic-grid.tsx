@@ -20,7 +20,6 @@ interface Ripple {
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
-const CELL_SIZE = 55; // Desktop-ish size. Will dictate cols/rows
 const INFLUENCE_RADIUS = 260;
 const MAX_WARP = 24;
 const DOT_SPACING = 28;
@@ -54,10 +53,14 @@ export default function KineticGrid({
   children,
   className,
   globalColor = "default",
+  cellSize = 12,
+  waveAmplitude = 4,
 }: {
   children?: ReactNode;
   className?: string;
   globalColor?: "default" | "monochrome";
+  cellSize?: number;
+  waveAmplitude?: number;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -196,10 +199,11 @@ export default function KineticGrid({
       }
 
       // ── Build warped grid ─────────────────────────────────────────────────
-      const cols = Math.max(2, Math.ceil(W / CELL_SIZE)) + 1;
-      const rows = Math.max(2, Math.ceil(H / CELL_SIZE)) + 1;
+      const cols = Math.max(2, Math.ceil(W / cellSize)) + 1;
+      const rows = Math.max(2, Math.ceil(H / cellSize)) + 1;
       const cellW = W / (cols - 1);
       const cellH = H / (rows - 1);
+      const waveTime = now * 0.0006;
 
       const pts: Point[][] = [];
       const prox: number[][] = [];
@@ -208,9 +212,11 @@ export default function KineticGrid({
         pts[row] = [];
         prox[row] = [];
         for (let col = 0; col < cols; col++) {
+          const gx = col * cellW;
+          const gy = row * cellH;
           const { pt, proximity } = getWarpedPoint(
-            col * cellW,
-            row * cellH,
+            gx,
+            gy,
             col,
             row,
             mouse,
@@ -218,7 +224,11 @@ export default function KineticGrid({
             cols,
             rows,
           );
-          pts[row][col] = pt;
+          const waveDy =
+            Math.sin(gx * 0.015 + waveTime * 2 + row * 0.25) * waveAmplitude +
+            Math.sin(gx * 0.006 - waveTime * 1.2 + row * 0.12) *
+              (waveAmplitude * 0.5);
+          pts[row][col] = { x: pt.x, y: pt.y + waveDy };
           prox[row][col] = proximity;
         }
       }
@@ -305,7 +315,7 @@ export default function KineticGrid({
         ctx.stroke();
       }
     },
-    [getWarpedPoint, globalColor],
+    [getWarpedPoint, globalColor, cellSize, waveAmplitude],
   );
 
   // ── Animation loop ──────────────────────────────────────────────────────────
