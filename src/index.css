@@ -208,7 +208,7 @@ h2{
 .section-note{
   max-width:56ch;
   font-size:clamp(15px, 1.6vw, 17px);
-  color:var(--ink);
+  color:var(--arena);
   margin:0;
 }
 
