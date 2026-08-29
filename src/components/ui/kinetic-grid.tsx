@@ -161,11 +161,11 @@ export default function KineticGrid({
           ripple: "100,180,255",
         },
         monochrome: {
-          bg: "#000000",
-          lineActive: { r: 255, g: 255, b: 255, a: 0.9 },
-          nodeActive: { r: 255, g: 255, b: 255, a: 1.0 },
-          glow: "255,255,255",
-          ripple: "255,255,255",
+          bg: "#0B1F33",
+          lineActive: { r: 143, g: 201, b: 214, a: 0.9 },
+          nodeActive: { r: 143, g: 201, b: 214, a: 1.0 },
+          glow: "143,201,214",
+          ripple: "143,201,214",
         },
       }[globalColor ?? "default"];
 
@@ -379,7 +379,7 @@ export default function KineticGrid({
     <div
       className={cn(
         "relative w-full min-h-screen overflow-hidden",
-        globalColor === "monochrome" ? "bg-[#000000]" : "bg-[#161618]",
+        globalColor === "monochrome" ? "bg-[#0B1F33]" : "bg-[#161618]",
         className,
       )}
     >

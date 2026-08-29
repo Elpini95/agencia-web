@@ -3,20 +3,27 @@
 /*
   Single fixed dark palette — the kinetic grid background is always dark,
   so the page commits to one theme instead of adapting to light/dark.
+  Brand palette: azul marino, azul petróleo, celeste, arena, blanco.
 */
 :root{
-  --paper:#18140F;
-  --paper-card:#221C15;
-  --ink:#F3ECDC;
-  --ink-soft:#C3B69C;
-  --line:#3A3225;
-  --line-strong:#4E4531;
-  --stamp-red:#E2603A;
-  --stamp-blue:#7FA0D6;
-  --stamp-mustard:#E3A93E;
-  --stamp-teal:#5EB3A2;
-  --focus:#7FA0D6;
-  --shadow: 0 1px 0 rgba(0,0,0,0.4);
+  --marino:#0B1F33;
+  --petroleo:#164A5A;
+  --celeste:#8FC9D6;
+  --arena:#E8E1D3;
+  --blanco:#F8FAFA;
+
+  --paper:var(--marino);
+  --paper-card:var(--petroleo);
+  --ink:var(--blanco);
+  --ink-soft:var(--arena);
+  --line:color-mix(in srgb, var(--petroleo) 55%, var(--marino) 45%);
+  --line-strong:color-mix(in srgb, var(--petroleo) 80%, var(--celeste) 20%);
+  --stamp-red:var(--celeste);
+  --stamp-blue:color-mix(in srgb, var(--celeste) 65%, var(--blanco) 35%);
+  --stamp-mustard:var(--arena);
+  --stamp-teal:color-mix(in srgb, var(--celeste) 60%, var(--petroleo) 40%);
+  --focus:var(--celeste);
+  --shadow: 0 1px 0 rgba(11,31,51,0.45);
 }
 
 /* Bridges the grid-feature-cards component's Tailwind color utilities
@@ -35,7 +42,7 @@ body{
   font-family:"IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
   line-height:1.5;
 }
-::selection{ background:var(--stamp-mustard); color:#1a1610; }
+::selection{ background:var(--celeste); color:var(--marino); }
 a{ color:inherit; }
 :focus-visible{ outline:2px solid var(--focus); outline-offset:3px; }
 img{ max-width:100%; display:block; }
@@ -76,15 +83,10 @@ header{
 }
 .brand-mark{
   width:30px; height:30px;
-  border:2px solid var(--ink);
-  border-radius:50%;
-  display:grid;
-  place-items:center;
-  font-family:"IBM Plex Mono", monospace;
-  font-size:12px;
-  font-weight:600;
+  border-radius:9px;
+  display:block;
   flex-shrink:0;
-  transform:rotate(-8deg);
+  object-fit:cover;
 }
 .btn{
   display:inline-flex;
@@ -104,12 +106,12 @@ header{
   transition:transform .15s ease, background .15s ease, color .15s ease;
 }
 .btn-solid{
-  background:var(--stamp-red);
-  border-color:var(--stamp-red);
-  color:#FBF3E7;
+  background:var(--celeste);
+  border-color:var(--celeste);
+  color:var(--marino);
 }
 .btn:hover{ transform:translate(-1px,-1px); }
-.btn-solid:hover{ background:color-mix(in srgb, var(--stamp-red) 88%, black); }
+.btn-solid:hover{ background:color-mix(in srgb, var(--celeste) 85%, white); }
 .btn-ghost:hover{ background:var(--ink); color:var(--paper); }
 .header-row .btn{ padding:9px 14px; font-size:12px; }
 
@@ -177,11 +179,24 @@ section{ padding:clamp(52px, 8vw, 88px) 0; }
 .section-num{
   font-family:"IBM Plex Mono", monospace;
   font-size:12.5px;
-  color:var(--stamp-red);
+  color:var(--celeste);
   letter-spacing:0.1em;
   text-transform:uppercase;
   margin:0 0 8px;
+  display:flex;
+  align-items:center;
+  gap:10px;
 }
+.section-num::before{
+  content:"";
+  width:22px;
+  height:3px;
+  background:currentColor;
+  display:inline-block;
+  flex-shrink:0;
+}
+#catalogo .section-num{ color:var(--arena); }
+.cta-block .section-num{ color:var(--petroleo); }
 h2{
   font-family:"Big Shoulders Display", ui-sans-serif, sans-serif;
   font-weight:700;
@@ -259,6 +274,7 @@ h2{
   padding:5px 9px;
   border:1.5px solid currentColor;
   border-radius:3px;
+  background:color-mix(in srgb, currentColor 18%, transparent);
   transform:rotate(-3deg);
   white-space:nowrap;
 }
@@ -321,17 +337,20 @@ h2{
 /* ---------- cta / footer ---------- */
 .cta-block{
   text-align:left;
-  border-top:1px solid var(--line-strong);
-  border-bottom:1px solid var(--line-strong);
-  padding-top:clamp(44px, 7vw, 72px);
-  padding-bottom:clamp(44px, 7vw, 72px);
+  background:var(--blanco);
+  color:var(--marino);
+  border-radius:4px;
+  padding-top:clamp(40px, 6vw, 64px);
+  padding-bottom:clamp(40px, 6vw, 64px);
+  padding-left:clamp(28px, 5vw, 52px);
+  padding-right:clamp(28px, 5vw, 52px);
   display:flex;
   justify-content:space-between;
   align-items:center;
   gap:24px;
   flex-wrap:wrap;
 }
-.cta-block h2{ max-width:22ch; }
+.cta-block h2{ max-width:22ch; color:var(--marino); }
 .cta-block .btn{ font-size:15px; padding:16px 28px; }
 
 footer{ padding:36px 0 48px; }

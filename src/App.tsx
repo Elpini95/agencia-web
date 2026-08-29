@@ -291,10 +291,8 @@ export default function App() {
       <header>
         <div className="wrap header-row">
           <a className="brand" href="#top">
-            <span className="brand-mark" aria-hidden="true">
-              ＋
-            </span>
-            LUMA
+            <img className="brand-mark" src="/logo-mark.jpg" alt="FJORA Labs" width={30} height={30} />
+            FJORA Labs
           </a>
           <a
             className="btn btn-ghost"
@@ -397,7 +395,7 @@ export default function App() {
 
       <footer className="wrap">
         <div className="footer-row">
-          <span>DESARROLLO WEB &amp; CONSULTORÍA DE PROCESOS</span>
+          <span>FJORA LABS — DESARROLLO WEB &amp; CONSULTORÍA DE PROCESOS</span>
           <span>© {year}</span>
         </div>
       </footer>
