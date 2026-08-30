@@ -54,7 +54,7 @@ export default function KineticGrid({
   className,
   globalColor = "default",
   cellSize = 12,
-  waveAmplitude = 4,
+  waveAmplitude = 40,
 }: {
   children?: ReactNode;
   className?: string;
