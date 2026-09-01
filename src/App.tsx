@@ -176,12 +176,21 @@ const CATALOG: FichaData[] = [
   },
   {
     href: "https://crm-fjoralabs.vercel.app/",
-    rubro: "CRM",
+    rubro: "Sistema de Gestión",
     color: "var(--stamp-teal)",
     index: "RUBRO 08",
-    title: "Gestión de clientes",
+    title: "Sistema de Gestion para PYMES",
     description:
       "Contactos, oportunidades y seguimiento de ventas en un solo lugar, sin perder el hilo de ningún cliente.",
+  },
+  {
+    href: "https://fjoraconsultorios.vercel.app/",
+    rubro: "Consultorios",
+    color: "var(--stamp-red)",
+    index: "RUBRO 09",
+    title: "Sistema consultorios",
+    description:
+      "Agenda de turnos, historiales de pacientes y gestión de citas. Todo lo que necesita un consultorio para funcionar sin papeles.",
   },
 ];
 
