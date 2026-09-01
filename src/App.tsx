@@ -157,7 +157,7 @@ const CATALOG: FichaData[] = [
       "Reserva de turnos, galería de trabajos y contacto directo con la profesional.",
   },
   {
-    href: "https://liliana-m-carro.vercel.app/",
+    href: "https://lilianacarro.vercel.app/",
     rubro: "Ecommerce",
     color: "var(--stamp-blue)",
     index: "RUBRO 06",
