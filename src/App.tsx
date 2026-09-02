@@ -174,25 +174,91 @@ const CATALOG: FichaData[] = [
     description:
       "Portfolio de sets, disponibilidad de fechas y cotización de eventos directo por WhatsApp.",
   },
+];
+
+type SistemaData = {
+  href: string;
+  label: string;
+  color: string;
+  title: string;
+};
+
+const SISTEMAS: SistemaData[] = [
   {
     href: "https://crm-fjoralabs.vercel.app/",
-    rubro: "Sistema de Gestión",
+    label: "Sistema de gestión",
     color: "var(--stamp-teal)",
-    index: "RUBRO 08",
-    title: "Sistema de Gestion para PYMES",
-    description:
-      "Contactos, oportunidades y seguimiento de ventas en un solo lugar, sin perder el hilo de ningún cliente.",
+    title: "Sistema de Gestión para PYMES",
   },
   {
     href: "https://fjoraconsultorios.vercel.app/",
-    rubro: "Consultorios",
+    label: "Consultorios",
     color: "var(--stamp-red)",
-    index: "RUBRO 09",
-    title: "Sistema consultorios",
-    description:
-      "Agenda de turnos, historiales de pacientes y gestión de citas. Todo lo que necesita un consultorio para funcionar sin papeles.",
+    title: "Sistema Consultorios",
   },
 ];
+
+function SistemaPanel({ href, label, color, title }: SistemaData) {
+  const [loaded, setLoaded] = useState(false);
+
+  return (
+    <div className="sistema-panel">
+      <div className="sistema-top">
+        <span className="stamp" style={{ color }}>
+          {label}
+        </span>
+        <a
+          className="sistema-open"
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Abrir en pestaña nueva
+          <span className="arrow">↗</span>
+        </a>
+      </div>
+      <h3>{title}</h3>
+      <div className="sistema-frame-wrap">
+        {loaded ? (
+          <iframe src={href} title={title} />
+        ) : (
+          <button
+            type="button"
+            className="sistema-load"
+            onClick={() => setLoaded(true)}
+          >
+            <span>Cargar demo en vivo</span>
+            <span className="arrow">→</span>
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function SistemasSplit() {
+  const shouldReduceMotion = useReducedMotion();
+  const grid = (
+    <div className="sistemas-split">
+      {SISTEMAS.map((sistema) => (
+        <SistemaPanel key={sistema.href} {...sistema} />
+      ))}
+    </div>
+  );
+
+  if (shouldReduceMotion) return grid;
+
+  return (
+    <motion.div
+      initial={{ filter: "blur(4px)", translateY: -8, opacity: 0 }}
+      whileInView={{ filter: "blur(0px)", translateY: 0, opacity: 1 }}
+      viewport={{ once: true }}
+      transition={{ delay: 0.2, duration: 0.8 }}
+    >
+      {grid}
+    </motion.div>
+  );
+}
 
 function FichaCard({ href, rubro, color, index, title, description }: FichaData) {
   const pattern = useMemo(() => genRandomPattern(), []);
@@ -377,6 +443,18 @@ export default function App() {
           <CatalogGrid />
         </section>
 
+        <section className="wrap" id="sistemas">
+          <div className="section-head">
+            <p className="section-num">03 — Sistemas a medida</p>
+            <h2>Recorré el sistema en vivo</h2>
+            <p className="section-note">
+              Esto no es una captura de pantalla: es la app real, corriendo.
+              Navegá, hacé clic, probá — sin salir de esta página.
+            </p>
+          </div>
+          <SistemasSplit />
+        </section>
+
         <section className="wrap" id="automatizaciones">
           <div className="auto-panel">
             <div>
@@ -397,7 +475,7 @@ export default function App() {
 
         <section className="wrap cta-block">
           <div>
-            <p className="section-num">03 — Contacto</p>
+            <p className="section-num">04 — Contacto</p>
             <h2>Contanos tu idea y nosotros armamos tu sistema.</h2>
           </div>
           <a
