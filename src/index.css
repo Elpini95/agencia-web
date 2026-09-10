@@ -76,11 +76,25 @@ header{
   display:flex;
   align-items:center;
   gap:10px;
+  text-decoration:none;
+}
+.brand-name{
   font-family:"Big Shoulders Display", ui-sans-serif, sans-serif;
   font-weight:700;
   font-size:20px;
-  letter-spacing:0.01em;
-  text-decoration:none;
+  letter-spacing:0.04em;
+  text-transform:uppercase;
+  color:var(--ink);
+}
+.brand-name em{
+  font-family:"Yellowtail", cursive;
+  font-style:normal;
+  font-weight:400;
+  font-size:22px;
+  letter-spacing:0;
+  text-transform:none;
+  color:var(--arena);
+  margin-left:1px;
 }
 .brand-mark{
   width:30px; height:30px;

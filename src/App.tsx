@@ -375,8 +375,10 @@ export default function App() {
       <header>
         <div className="wrap header-row">
           <a className="brand" href="#top">
-            <img className="brand-mark" src="/logo-mark.jpg" alt="FJORA Labs" width={30} height={30} />
-            FJORA Labs
+            <img className="brand-mark" src="/logo-mark.png" alt="" width={30} height={30} />
+            <span className="brand-name">
+              FJORA<em>labs</em>
+            </span>
           </a>
           <a
             className="btn btn-ghost"
