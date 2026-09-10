@@ -36,7 +36,7 @@ function MarqueeCard({ card }: { card: RuixenCardProps }) {
         }}
       >
         {card.image ? (
-          <img src={card.image} alt="" loading="lazy" />
+          <img src={card.image} alt="" loading="eager" />
         ) : Icon ? (
           <Icon
             className="marquee-card-icon"
