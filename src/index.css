@@ -245,58 +245,7 @@ h2{
 }
 .service-tile h3{ color:var(--arena); }
 
-/* ---------- demo catalog ---------- */
-.ficha{
-  position:relative;
-  padding:24px 22px 22px;
-  background:var(--tile-bg);
-  color:var(--arena);
-  text-decoration:none;
-  display:flex;
-  flex-direction:column;
-  gap:16px;
-  transition:background-color .18s ease;
-}
-.ficha:hover, .ficha:focus-visible{
-  background:color-mix(in srgb, var(--tile-bg) 88%, var(--celeste) 12%);
-}
-.catalog-grid .ficha-pattern-svg{
-  fill:color-mix(in srgb, var(--arena) 5%, transparent);
-  stroke:color-mix(in srgb, var(--arena) 20%, transparent);
-}
-.catalog-grid .ficha-index,
-.catalog-grid .ficha p{ color:var(--arena); }
-.ficha-pattern{
-  pointer-events:none;
-  position:absolute;
-  inset:0;
-  overflow:hidden;
-  mask-image:linear-gradient(white, transparent);
-}
-.ficha-pattern-fade{
-  position:absolute;
-  inset:0;
-  mask-image:radial-gradient(farthest-side at top left, white, transparent);
-  opacity:0.6;
-}
-.ficha-pattern-svg{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  fill:color-mix(in srgb, var(--ink) 5%, transparent);
-  stroke:color-mix(in srgb, var(--ink) 20%, transparent);
-  mix-blend-mode:overlay;
-}
-.ficha-top{
-  position:relative;
-  display:flex;
-  align-items:flex-start;
-  justify-content:space-between;
-  gap:12px;
-  padding-bottom:16px;
-  border-bottom:1px dashed var(--line-strong);
-}
+/* ---------- stamp badge (shared: sistemas panel, carousel) ---------- */
 .stamp{
   font-family:"IBM Plex Mono", monospace;
   font-size:10.5px;
@@ -310,43 +259,6 @@ h2{
   transform:rotate(-3deg);
   white-space:nowrap;
 }
-.ficha-index{
-  font-family:"IBM Plex Mono", monospace;
-  font-size:11px;
-  color:var(--ink-soft);
-}
-.ficha h3{
-  position:relative;
-  font-family:"Big Shoulders Display", sans-serif;
-  font-weight:700;
-  font-size:24px;
-  margin:0;
-  line-height:1.05;
-  color:var(--arena);
-}
-.ficha p{
-  position:relative;
-  margin:0;
-  font-size:14px;
-  color:var(--ink-soft);
-  flex-grow:1;
-}
-.ficha-cta{
-  position:relative;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  font-family:"IBM Plex Mono", monospace;
-  font-size:12.5px;
-  font-weight:600;
-  letter-spacing:0.04em;
-  text-transform:uppercase;
-  padding-top:14px;
-  border-top:1px solid var(--line);
-}
-.ficha-cta .arrow{ transition:transform .15s ease; }
-.ficha:hover .arrow, .ficha:focus-visible .arrow{ transform:translateX(4px); }
-
 /* ---------- sistemas split (demo embebida en vivo) ---------- */
 .sistemas-split{
   display:grid;

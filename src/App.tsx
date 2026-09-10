@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import {
   Route,
   Bot,
@@ -13,14 +13,18 @@ import {
   Smartphone,
   ListChecks,
   Wrench,
+  UtensilsCrossed,
+  Hammer,
+  Dumbbell,
+  Scissors,
+  Music2,
 } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 import KineticGrid from "@/components/ui/kinetic-grid";
-import {
-  FeatureCard,
-  GridPattern,
-  genRandomPattern,
-} from "@/components/ui/grid-feature-cards";
+import { FeatureCard } from "@/components/ui/grid-feature-cards";
+import RuixenCarouselWave, {
+  type RuixenCardProps,
+} from "@/components/ui/ruixen-carousel-wave";
 
 const SERVICE_FEATURES = [
   {
@@ -101,78 +105,62 @@ function ServiceFeatureGrid() {
   );
 }
 
-type FichaData = {
-  href: string;
-  rubro: string;
-  color: string;
-  index: string;
-  title: string;
-  description: string;
-};
-
-const CATALOG: FichaData[] = [
+const CATALOG: RuixenCardProps[] = [
   {
     href: "https://gastronomia-demo.vercel.app/",
-    rubro: "Gastronomía",
-    color: "var(--stamp-red)",
-    index: "RUBRO 01",
     title: "Restaurantes y bares",
-    description:
+    subtitle:
       "Carta online, fotos que dan hambre y reserva de mesa por WhatsApp en dos toques.",
+    icon: UtensilsCrossed,
+    badge: { text: "Gastronomía", variant: "red" },
   },
   {
     href: "https://corralon-demo.vercel.app/",
-    rubro: "Corralón / Ferretería",
-    color: "var(--stamp-blue)",
-    index: "RUBRO 02",
     title: "Materiales y ferretería",
-    description:
+    subtitle:
       "Catálogo por categorías, precios claros y pedidos que llegan directo por WhatsApp.",
+    icon: Hammer,
+    badge: { text: "Corralón / Ferretería", variant: "blue" },
   },
   {
     href: "https://gym-demo-ten-rosy.vercel.app/",
-    rubro: "Gimnasio",
-    color: "var(--stamp-mustard)",
-    index: "RUBRO 03",
     title: "Gimnasios y boxes",
-    description:
+    subtitle:
       "Planes, horarios de clases y alta de socios nuevos sin planillas ni vueltas.",
+    icon: Dumbbell,
+    badge: { text: "Gimnasio", variant: "mustard" },
   },
   {
     href: "https://mecanico-demo.vercel.app/",
-    rubro: "Mecánico",
-    color: "var(--stamp-teal)",
-    index: "RUBRO 04",
     title: "Talleres mecánicos",
-    description:
+    subtitle:
       "Servicios, turnos y presupuesto rápido para que el cliente no tenga que llamar.",
+    icon: Wrench,
+    badge: { text: "Mecánico", variant: "teal" },
   },
   {
     href: "https://salon-demo-web-tau.vercel.app/",
-    rubro: "Salón / Belleza",
-    color: "var(--stamp-red)",
-    index: "RUBRO 05",
     title: "Peluquerías y estética",
-    description:
+    subtitle:
       "Reserva de turnos, galería de trabajos y contacto directo con la profesional.",
+    icon: Scissors,
+    badge: { text: "Salón / Belleza", variant: "red" },
   },
   {
     href: "https://lilianacarro.vercel.app/",
-    rubro: "Ecommerce",
-    color: "var(--stamp-blue)",
-    index: "RUBRO 06",
     title: "Tienda online",
-    description:
+    subtitle:
       "Catálogo, carrito y checkout completo. Para marcas que quieren vender online en serio.",
+    icon: ShoppingCart,
+    badge: { text: "Ecommerce", variant: "blue" },
   },
   {
     href: "https://djs-demo.vercel.app/",
-    rubro: "DJ / Eventos",
-    color: "var(--stamp-mustard)",
-    index: "RUBRO 07",
     title: "DJs y música en vivo",
-    description:
+    subtitle:
       "Portfolio de sets, disponibilidad de fechas y cotización de eventos directo por WhatsApp.",
+    icon: Music2,
+    badge: { text: "DJ / Eventos", variant: "mustard" },
   },
 ];
 
@@ -260,50 +248,11 @@ function SistemasSplit() {
   );
 }
 
-function FichaCard({ href, rubro, color, index, title, description }: FichaData) {
-  const pattern = useMemo(() => genRandomPattern(), []);
-
-  return (
-    <a className="ficha" href={href} target="_blank" rel="noopener noreferrer">
-      <div className="ficha-pattern" aria-hidden="true">
-        <div className="ficha-pattern-fade">
-          <GridPattern
-            width={20}
-            height={20}
-            x="-12"
-            y="4"
-            squares={pattern}
-            className="ficha-pattern-svg"
-          />
-        </div>
-      </div>
-      <div className="ficha-top">
-        <span className="stamp" style={{ color }}>
-          {rubro}
-        </span>
-        <span className="ficha-index mono">{index}</span>
-      </div>
-      <h3>{title}</h3>
-      <p>{description}</p>
-      <div className="ficha-cta">
-        <span>Ver demo</span>
-        <span className="arrow">→</span>
-      </div>
-    </a>
-  );
-}
-
-function CatalogGrid() {
+function CatalogCarousel() {
   const shouldReduceMotion = useReducedMotion();
-  const grid = (
-    <div className="feature-grid catalog-grid grid grid-cols-1 divide-x divide-y divide-dashed border border-dashed sm:grid-cols-2 lg:grid-cols-3">
-      {CATALOG.map((item) => (
-        <FichaCard key={item.href} {...item} />
-      ))}
-    </div>
-  );
+  const carousel = <RuixenCarouselWave cards={CATALOG} />;
 
-  if (shouldReduceMotion) return grid;
+  if (shouldReduceMotion) return carousel;
 
   return (
     <motion.div
@@ -312,7 +261,7 @@ function CatalogGrid() {
       viewport={{ once: true }}
       transition={{ delay: 0.2, duration: 0.8 }}
     >
-      {grid}
+      {carousel}
     </motion.div>
   );
 }
@@ -442,7 +391,7 @@ export default function App() {
               y si algo se parece a lo que necesitás, hablamos.
             </p>
           </div>
-          <CatalogGrid />
+          <CatalogCarousel />
         </section>
 
         <section className="wrap" id="sistemas">
