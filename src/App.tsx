@@ -112,6 +112,7 @@ const CATALOG: RuixenCardProps[] = [
     subtitle:
       "Carta online, fotos que dan hambre y reserva de mesa por WhatsApp en dos toques.",
     icon: UtensilsCrossed,
+    image: "/catalogo/gastronomia.jpg",
     badge: { text: "Gastronomía", variant: "red" },
   },
   {
@@ -120,6 +121,7 @@ const CATALOG: RuixenCardProps[] = [
     subtitle:
       "Catálogo por categorías, precios claros y pedidos que llegan directo por WhatsApp.",
     icon: Hammer,
+    image: "/catalogo/corralon.jpg",
     badge: { text: "Corralón / Ferretería", variant: "blue" },
   },
   {
@@ -128,6 +130,7 @@ const CATALOG: RuixenCardProps[] = [
     subtitle:
       "Planes, horarios de clases y alta de socios nuevos sin planillas ni vueltas.",
     icon: Dumbbell,
+    image: "/catalogo/gimnasio.jpg",
     badge: { text: "Gimnasio", variant: "mustard" },
   },
   {
@@ -136,6 +139,7 @@ const CATALOG: RuixenCardProps[] = [
     subtitle:
       "Servicios, turnos y presupuesto rápido para que el cliente no tenga que llamar.",
     icon: Wrench,
+    image: "/catalogo/mecanico.jpg",
     badge: { text: "Mecánico", variant: "teal" },
   },
   {
@@ -144,6 +148,7 @@ const CATALOG: RuixenCardProps[] = [
     subtitle:
       "Reserva de turnos, galería de trabajos y contacto directo con la profesional.",
     icon: Scissors,
+    image: "/catalogo/salon.jpg",
     badge: { text: "Salón / Belleza", variant: "red" },
   },
   {
@@ -152,6 +157,7 @@ const CATALOG: RuixenCardProps[] = [
     subtitle:
       "Catálogo, carrito y checkout completo. Para marcas que quieren vender online en serio.",
     icon: ShoppingCart,
+    image: "/catalogo/ecommerce.jpg",
     badge: { text: "Ecommerce", variant: "blue" },
   },
   {
@@ -160,6 +166,7 @@ const CATALOG: RuixenCardProps[] = [
     subtitle:
       "Portfolio de sets, disponibilidad de fechas y cotización de eventos directo por WhatsApp.",
     icon: Music2,
+    image: "/catalogo/dj.jpg",
     badge: { text: "DJ / Eventos", variant: "mustard" },
   },
 ];
