@@ -259,6 +259,121 @@ h2{
   transform:rotate(-3deg);
   white-space:nowrap;
 }
+
+/* ---------- catalog marquee (demos por rubro) ---------- */
+.marquee-stack{
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+  border-top:1px solid var(--line-strong);
+  border-bottom:1px solid var(--line-strong);
+  padding:28px 0;
+}
+.marquee-row-viewport{
+  overflow:hidden;
+  mask-image:linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+}
+.marquee-row-track{
+  display:flex;
+  gap:18px;
+  width:max-content;
+  animation-timing-function:linear;
+  animation-iteration-count:infinite;
+}
+.marquee-row-track--left{ animation-name:marquee-left; }
+.marquee-row-track--right{ animation-name:marquee-right; }
+.marquee-row-viewport:hover .marquee-row-track{ animation-play-state:paused; }
+@keyframes marquee-left{
+  from{ transform:translateX(0); }
+  to{ transform:translateX(-50%); }
+}
+@keyframes marquee-right{
+  from{ transform:translateX(-50%); }
+  to{ transform:translateX(0); }
+}
+@media (prefers-reduced-motion: reduce){
+  .marquee-row-track{ animation:none !important; }
+}
+
+.marquee-card{
+  position:relative;
+  flex:0 0 auto;
+  width:230px;
+  border:1px solid var(--line-strong);
+  border-radius:4px;
+  overflow:hidden;
+  text-decoration:none;
+  background:var(--tile-bg);
+  transition:transform .2s ease;
+}
+.marquee-card:hover, .marquee-card:focus-visible{
+  transform:translateY(-3px);
+}
+.marquee-card-art{
+  position:relative;
+  height:150px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.marquee-card-art img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.marquee-card-icon{
+  width:56px;
+  height:56px;
+}
+.marquee-card-badge{
+  position:absolute;
+  top:10px;
+  left:10px;
+  font-family:"IBM Plex Mono", monospace;
+  font-size:10px;
+  font-weight:600;
+  letter-spacing:0.05em;
+  text-transform:uppercase;
+  padding:4px 8px;
+  border-radius:3px;
+  white-space:nowrap;
+}
+.marquee-card-body{
+  padding:14px 16px 16px;
+}
+.marquee-card-body h3{
+  font-family:"Big Shoulders Display", sans-serif;
+  font-weight:700;
+  font-size:18px;
+  margin:0 0 6px;
+  line-height:1.1;
+  color:var(--arena);
+}
+.marquee-card-body p{
+  margin:0;
+  font-size:12.5px;
+  line-height:1.4;
+  color:var(--ink-soft);
+}
+.marquee-card-cta{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-top:10px;
+  padding-top:10px;
+  border-top:1px solid var(--line);
+  font-family:"IBM Plex Mono", monospace;
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:0.03em;
+  text-transform:uppercase;
+  color:var(--ink);
+}
+.marquee-card-cta .arrow{ transition:transform .15s ease; }
+.marquee-card:hover .marquee-card-cta .arrow{ transform:translateX(4px); }
+
 /* ---------- sistemas split (demo embebida en vivo) ---------- */
 .sistemas-split{
   display:grid;

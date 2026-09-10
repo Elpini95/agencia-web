@@ -22,9 +22,9 @@ import {
 import { motion, useReducedMotion } from "motion/react";
 import KineticGrid from "@/components/ui/kinetic-grid";
 import { FeatureCard } from "@/components/ui/grid-feature-cards";
-import RuixenCarouselWave, {
+import CatalogMarquee, {
   type RuixenCardProps,
-} from "@/components/ui/ruixen-carousel-wave";
+} from "@/components/ui/catalog-marquee";
 
 const SERVICE_FEATURES = [
   {
@@ -250,7 +250,7 @@ function SistemasSplit() {
 
 function CatalogCarousel() {
   const shouldReduceMotion = useReducedMotion();
-  const carousel = <RuixenCarouselWave cards={CATALOG} />;
+  const carousel = <CatalogMarquee cards={CATALOG} />;
 
   if (shouldReduceMotion) return carousel;
 
