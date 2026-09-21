@@ -1,7 +1,7 @@
 export default function WhatsappBubble({ href }: { href: string }) {
   return (
     <a
-      className="whatsapp-bubble"
+      className="bubble-btn bubble-btn--whatsapp"
       href={href}
       target="_blank"
       rel="noopener noreferrer"

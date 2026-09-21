@@ -19,6 +19,7 @@ import {
   Scissors,
   Music2,
   Check,
+  Stethoscope,
 } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 import KineticGrid from "@/components/ui/kinetic-grid";
@@ -27,6 +28,7 @@ import CatalogMarquee, {
   type RuixenCardProps,
 } from "@/components/ui/catalog-marquee";
 import WhatsappBubble from "@/components/ui/whatsapp-bubble";
+import CalendarBubble from "@/components/ui/calendar-bubble";
 import AutodiagnosticoForm from "@/components/ui/autodiagnostico";
 import FaqAccordion, { type FaqItem } from "@/components/ui/faq-accordion";
 
@@ -180,6 +182,8 @@ type SistemaData = {
   label: string;
   color: string;
   title: string;
+  description: string;
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
 };
 
 const SISTEMAS: SistemaData[] = [
@@ -188,50 +192,49 @@ const SISTEMAS: SistemaData[] = [
     label: "Sistema de gestión",
     color: "var(--stamp-teal)",
     title: "Sistema de Gestión para PYMES",
+    description:
+      "Financiero, cobranzas, stock, presupuestos y CRM en un solo panel, todo conectado.",
+    icon: Workflow,
   },
   {
     href: "https://fjoraconsultorios.vercel.app/",
     label: "Consultorios",
     color: "var(--stamp-red)",
     title: "Sistema Consultorios",
+    description:
+      "Agenda, turnos, pacientes y recordatorios para consultorios y centros de salud.",
+    icon: Stethoscope,
   },
 ];
 
-function SistemaPanel({ href, label, color, title }: SistemaData) {
-  const [loaded, setLoaded] = useState(false);
-
+function SistemaPanel({ href, label, color, title, description, icon: Icon }: SistemaData) {
   return (
-    <div className="sistema-panel">
-      <div className="sistema-top">
+    <a
+      className="sistema-panel"
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <div
+        className="sistema-art"
+        style={{
+          background: `linear-gradient(155deg, color-mix(in srgb, ${color} 22%, var(--marino)) 0%, var(--marino) 78%)`,
+        }}
+      >
+        <Icon className="sistema-icon" strokeWidth={1} aria-hidden="true" />
+      </div>
+      <div className="sistema-body">
         <span className="stamp" style={{ color }}>
           {label}
         </span>
-        <a
-          className="sistema-open"
-          href={href}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Abrir en pestaña nueva
-          <span className="arrow">↗</span>
-        </a>
+        <h3>{title}</h3>
+        <p>{description}</p>
+        <div className="sistema-cta">
+          <span>Ver demo</span>
+          <span className="arrow">→</span>
+        </div>
       </div>
-      <h3>{title}</h3>
-      <div className="sistema-frame-wrap">
-        {loaded ? (
-          <iframe src={href} title={title} />
-        ) : (
-          <button
-            type="button"
-            className="sistema-load"
-            onClick={() => setLoaded(true)}
-          >
-            <span>Cargar demo en vivo</span>
-            <span className="arrow">→</span>
-          </button>
-        )}
-      </div>
-    </div>
+    </a>
   );
 }
 
@@ -281,31 +284,57 @@ const AUTO_FEATURES = [
   {
     title: "Relevamiento",
     icon: Route,
-    description: "Cómo se hacen las cosas hoy, paso a paso.",
+    before: "No sabés bien cuánto tiempo se va en tareas repetidas.",
+    after: "Un diagnóstico claro de qué automatizar primero.",
   },
   {
     title: "Chatbot IA",
     icon: Bot,
-    description: "Responde consultas frecuentes y toma pedidos las 24 horas.",
+    before: "Contestás las mismas preguntas veinte veces por día.",
+    after: "El chatbot responde y toma pedidos las 24 horas.",
   },
   {
     title: "Agenda automática",
     icon: CalendarClock,
-    description: "Integrada a WhatsApp o al sitio, sin cruces de turnos.",
+    before: "Turnos coordinados a mano, con cruces y olvidos.",
+    after: "Agenda integrada a WhatsApp o al sitio, sin superposiciones.",
   },
   {
     title: "Automatización",
     icon: RefreshCw,
-    description: "Avisos y seguimientos que hoy se hacen a mano, resueltos solos.",
+    before: "Avisos y seguimientos que hacés uno por uno, a mano.",
+    after: "Se disparan solos, en el momento justo.",
   },
 ];
+
+function AutoFeatureCard({
+  feature,
+}: {
+  feature: (typeof AUTO_FEATURES)[number];
+}) {
+  const Icon = feature.icon;
+  return (
+    <div className="auto-feature-card">
+      <Icon className="auto-feature-icon" strokeWidth={1} aria-hidden="true" />
+      <h3>{feature.title}</h3>
+      <div className="auto-feature-row">
+        <span className="tag tag--antes">Antes</span>
+        <p>{feature.before}</p>
+      </div>
+      <div className="auto-feature-row">
+        <span className="tag tag--despues">Después</span>
+        <p>{feature.after}</p>
+      </div>
+    </div>
+  );
+}
 
 function AutoFeatureGrid() {
   const shouldReduceMotion = useReducedMotion();
   const grid = (
     <div className="feature-grid auto-grid grid grid-cols-1 divide-x divide-y divide-dashed border border-dashed sm:grid-cols-2">
       {AUTO_FEATURES.map((feature) => (
-        <FeatureCard key={feature.title} feature={feature} />
+        <AutoFeatureCard key={feature.title} feature={feature} />
       ))}
     </div>
   );
@@ -364,32 +393,42 @@ const FAQ_ITEMS: FaqItem[] = [
   {
     question: "¿Cuánto tarda en estar lista mi página?",
     answer:
-      "Depende del alcance: una landing simple puede estar en pocos días. Un sistema a medida lleva más, y el plazo se define en el diagnóstico inicial.",
+      "Depende del alcance, no hay un número único: una landing simple puede estar en pocos días, un sistema a medida lleva más. El plazo exacto se lo decimos en el diagnóstico inicial, cuando ya sabemos qué estamos construyendo.",
+  },
+  {
+    question: "¿Me podés pasar un precio sin hacer la consulta?",
+    answer:
+      "Prefiero no tirar un número al aire y después decepcionarte con la propuesta real. En 20 minutos entendemos tu caso y ahí sí te doy una cifra que se sostiene, sin sorpresas después.",
   },
   {
     question: "¿El precio incluye hosting y dominio?",
     answer:
-      "El dominio y el hosting corren por separado (son servicios de terceros, con costo anual bajo). Te ayudamos a contratarlos y configurarlos sin vueltas.",
+      "El dominio y el hosting corren por separado (son servicios de terceros, con costo anual bajo). Te ayudamos a contratarlos y configurarlos, no tenés que resolverlo solo.",
   },
   {
     question: "¿Puedo pedir cambios después de la entrega?",
     answer:
-      "Sí. Los primeros ajustes post-entrega están contemplados, y después podés sumar el mantenimiento mensual para cambios continuos.",
+      "Sí. Los primeros ajustes post-entrega están contemplados en el proyecto, y después podés sumar el mantenimiento mensual para cambios continuos sin tener que renegociar cada vez.",
   },
   {
     question: "¿Tienen mantenimiento mensual?",
     answer:
-      "Sí, es uno de los servicios del catálogo: cambios, contenido al día y que el sitio nunca se caiga.",
+      "Sí, es uno de los servicios del catálogo: cambios, contenido al día y que el sitio nunca se caiga. Vos avisás qué necesitás, nosotros lo resolvemos.",
+  },
+  {
+    question: "¿Pierdo el trato personal con mis clientes si automatizo algo?",
+    answer:
+      "Al revés: el chatbot o la agenda automática se ocupan de lo repetitivo (horarios, precios, turnos), y a vos te queda más tiempo para la atención que realmente necesita a una persona.",
   },
   {
     question: "¿Qué pasa si no tengo fotos o contenido propio?",
     answer:
-      "No pasa nada. Te ayudamos a definir qué contenido necesitás y de dónde sacarlo, o lo resolvemos juntos en el diagnóstico inicial.",
+      "No pasa nada. Definimos juntos qué contenido hace falta y de dónde sacarlo en el diagnóstico inicial — no es algo que tengas que resolver antes de hablar con nosotros.",
   },
   {
     question: "¿Cómo es la forma de pago?",
     answer:
-      "Se coordina caso a caso después del presupuesto, según el tamaño del proyecto. Lo conversamos directo por WhatsApp o en la consulta.",
+      "Se coordina caso a caso después del presupuesto, según el tamaño del proyecto. Lo conversamos directo por WhatsApp o en la consulta, sin letra chica.",
   },
 ];
 
@@ -406,14 +445,24 @@ export default function App() {
               FJORA<em>labs</em>
             </span>
           </a>
-          <a
-            className="btn btn-ghost"
-            href={WHATSAPP_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Hablar por WhatsApp
-          </a>
+          <div className="header-ctas">
+            <a
+              className="btn btn-ghost"
+              href={WHATSAPP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              WhatsApp
+            </a>
+            <a
+              className="btn btn-ghost"
+              href={CALENDAR_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Agendar
+            </a>
+          </div>
         </div>
       </header>
 
@@ -439,6 +488,14 @@ export default function App() {
               rel="noopener noreferrer"
             >
               Contame tu negocio →
+            </a>
+            <a
+              className="btn btn-ghost"
+              href={CALENDAR_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Agendar consulta gratuita
             </a>
             <a className="btn btn-ghost" href="#catalogo">
               Ver el catálogo de demos
@@ -476,8 +533,8 @@ export default function App() {
             <p className="section-num">03 — Sistemas a medida</p>
             <h2>Recorré el sistema en vivo</h2>
             <p className="section-note">
-              Esto no es una captura de pantalla: es la app real, corriendo.
-              Navegá, hacé clic, probá — sin salir de esta página.
+              Esto no es una captura de pantalla: es la app real, funcionando.
+              Entrá y recorrela con datos de ejemplo.
             </p>
           </div>
           <SistemasSplit />
@@ -592,7 +649,10 @@ export default function App() {
         </div>
       </footer>
 
-      <WhatsappBubble href={WHATSAPP_URL} />
+      <div className="floating-actions">
+        <CalendarBubble href={CALENDAR_URL} />
+        <WhatsappBubble href={WHATSAPP_URL} />
+      </div>
     </KineticGrid>
   );
 }
