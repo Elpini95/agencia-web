@@ -27,6 +27,14 @@
   --shadow: 0 1px 0 rgba(11,31,51,0.45);
 }
 
+/* Bridges the grid-feature-cards component's Tailwind color utilities
+   (text-foreground, fill-foreground, text-muted-foreground, etc.) to
+   this page's own palette instead of shadcn's default theme. */
+@theme{
+  --color-foreground: var(--ink);
+  --color-muted-foreground: var(--ink-soft);
+}
+
 *{box-sizing:border-box;}
 html{-webkit-text-size-adjust:100%;}
 body{
@@ -234,56 +242,23 @@ h2{
 }
 
 /* Page background stays uniform dark — only each individual tile/ficha
-   ("el cuadrado") gets its own card treatment, matching the sistema-panel
-   and marquee-card visual language used elsewhere on the page. */
+   ("el cuadrado") gets the arena-card color, not the section around it. */
 .service-tile{
-  display:flex;
-  flex-direction:column;
   background:var(--tile-bg);
-  transition:background-color .18s ease;
+  --color-foreground:var(--arena);
+  --color-muted-foreground:var(--arena);
 }
-.service-tile:hover{
-  background:color-mix(in srgb, var(--tile-bg) 88%, var(--celeste) 12%);
-}
-.service-tile-art{
-  height:110px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-.service-tile-icon{
-  width:40px;
-  height:40px;
-  color:var(--arena);
-}
-.service-tile-body{
-  padding:18px 20px 20px;
-  display:flex;
-  flex-direction:column;
-  gap:6px;
-}
-.service-tile-body h3{
-  font-family:"Big Shoulders Display", sans-serif;
-  font-weight:700;
-  font-size:17px;
-  margin:0;
-  line-height:1.1;
-  color:var(--arena);
-}
-.service-tile-body p{
-  margin:0;
-  font-size:13px;
-  line-height:1.45;
-  color:var(--ink-soft);
-}
+.service-tile h3{ color:var(--arena); }
 
 /* ---------- button reset (cards that open the demo popup) ---------- */
-.sistema-panel, .marquee-card{
+.sistema-panel, .marquee-card, .auto-feature-card{
   appearance:none;
   -webkit-appearance:none;
   margin:0;
   padding:0;
   width:100%;
+  background:transparent;
+  border:none;
   font:inherit;
   text-align:left;
   cursor:pointer;
@@ -514,6 +489,11 @@ h2{
   display:flex;
   flex-direction:column;
   gap:12px;
+  height:100%;
+  transition:background-color .18s ease;
+}
+.auto-feature-card:hover{
+  background:color-mix(in srgb, var(--paper-card) 88%, var(--celeste) 12%);
 }
 .auto-feature-icon{
   width:24px;
@@ -527,6 +507,26 @@ h2{
   margin:0;
   color:var(--ink);
 }
+.auto-feature-teaser{
+  margin:0;
+  flex-grow:1;
+  font-size:13px;
+  line-height:1.5;
+  color:var(--ink-soft);
+}
+.auto-feature-link{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  font-family:"IBM Plex Mono", monospace;
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:0.04em;
+  text-transform:uppercase;
+  color:var(--celeste);
+}
+.auto-feature-link .arrow{ transition:transform .15s ease; }
+.auto-feature-card:hover .auto-feature-link .arrow{ transform:translateX(4px); }
 .auto-before-after{
   border:1px solid var(--line-strong);
   border-radius:6px;
@@ -722,9 +722,13 @@ h2{
 .faq-list{
   display:flex;
   flex-direction:column;
-  border-top:1px solid var(--line-strong);
+  background:var(--paper-card);
+  border:1px solid var(--line-strong);
+  border-radius:6px;
+  padding:6px clamp(16px, 4vw, 28px);
 }
 .faq-item{ border-bottom:1px solid var(--line-strong); }
+.faq-item:last-child{ border-bottom:none; }
 .faq-question{
   width:100%;
   display:flex;
@@ -922,6 +926,106 @@ footer{ padding:36px 0 48px; }
   .demo-modal-overlay{ padding:0; }
   .demo-modal{ width:100%; height:100%; border-radius:0; }
   .demo-modal-footer{ flex-direction:column; align-items:stretch; }
+}
+
+/* ---------- feature popup (automatizaciones — estilo EvoFlow) ---------- */
+.feature-modal-overlay{
+  position:fixed;
+  inset:0;
+  z-index:200;
+  background:color-mix(in srgb, var(--marino) 82%, transparent);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+}
+.feature-modal{
+  position:relative;
+  width:min(560px, 100%);
+  max-height:85vh;
+  overflow-y:auto;
+  background:var(--paper-card);
+  border:1px solid var(--line-strong);
+  border-radius:8px;
+  padding:clamp(28px, 5vw, 40px);
+  box-shadow:0 20px 60px rgba(11,31,51,0.55);
+}
+.feature-modal-close{
+  position:absolute;
+  top:16px;
+  right:16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:30px;
+  height:30px;
+  border:none;
+  border-radius:4px;
+  background:transparent;
+  color:var(--ink-soft);
+  cursor:pointer;
+}
+.feature-modal-close:hover{ background:color-mix(in srgb, var(--ink) 12%, transparent); color:var(--ink); }
+.feature-modal-icon{
+  width:52px;
+  height:52px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:10px;
+  margin-bottom:20px;
+  background:color-mix(in srgb, var(--stamp-teal) 30%, var(--paper-card));
+  color:var(--ink);
+}
+.feature-modal-icon svg{ width:26px; height:26px; }
+.feature-modal .eyebrow{ margin-bottom:8px; }
+.feature-modal h3{
+  font-family:"Big Shoulders Display", sans-serif;
+  font-weight:700;
+  font-size:clamp(22px, 4vw, 28px);
+  line-height:1.1;
+  color:var(--ink);
+  margin:0 0 20px;
+}
+.feature-modal .auto-before-after{ margin-bottom:24px; }
+.feature-modal-improves{ margin-bottom:28px; }
+.feature-modal-label{
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  color:var(--stamp-teal);
+  margin:0 0 12px;
+}
+.feature-modal-improves ul{
+  list-style:none;
+  margin:0;
+  padding:0;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.feature-modal-improves li{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  font-size:14px;
+  line-height:1.45;
+  color:var(--ink-soft);
+}
+.feature-modal-improves li svg{
+  flex-shrink:0;
+  margin-top:2px;
+  color:var(--stamp-teal);
+}
+.feature-modal-footer{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+@media (max-width:600px){
+  .feature-modal-overlay{ padding:12px; }
+  .feature-modal-footer{ flex-direction:column-reverse; align-items:stretch; }
 }
 
 @media (prefers-reduced-motion: reduce){

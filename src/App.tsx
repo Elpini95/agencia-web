@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 import KineticGrid from "@/components/ui/kinetic-grid";
+import { FeatureCard } from "@/components/ui/grid-feature-cards";
 import CatalogMarquee, {
   type RuixenCardProps,
 } from "@/components/ui/catalog-marquee";
@@ -31,13 +32,7 @@ import CalendarBubble from "@/components/ui/calendar-bubble";
 import AutodiagnosticoForm from "@/components/ui/autodiagnostico";
 import FaqAccordion, { type FaqItem } from "@/components/ui/faq-accordion";
 import DemoModal, { type DemoModalData } from "@/components/ui/demo-modal";
-
-const SERVICE_ACCENTS = [
-  "var(--stamp-red)",
-  "var(--stamp-blue)",
-  "var(--stamp-mustard)",
-  "var(--stamp-teal)",
-];
+import FeatureModal, { type FeatureModalData } from "@/components/ui/feature-modal";
 
 const SERVICE_FEATURES = [
   {
@@ -94,42 +89,12 @@ const SERVICE_FEATURES = [
   },
 ];
 
-function ServiceTile({
-  feature,
-  color,
-}: {
-  feature: (typeof SERVICE_FEATURES)[number];
-  color: string;
-}) {
-  const Icon = feature.icon;
-  return (
-    <div className="service-tile">
-      <div
-        className="service-tile-art"
-        style={{
-          background: `linear-gradient(155deg, color-mix(in srgb, ${color} 22%, var(--marino)) 0%, var(--marino) 78%)`,
-        }}
-      >
-        <Icon className="service-tile-icon" strokeWidth={1} aria-hidden="true" />
-      </div>
-      <div className="service-tile-body">
-        <h3>{feature.title}</h3>
-        <p>{feature.description}</p>
-      </div>
-    </div>
-  );
-}
-
 function ServiceFeatureGrid() {
   const shouldReduceMotion = useReducedMotion();
   const grid = (
     <div className="feature-grid services-grid grid grid-cols-1 divide-x divide-y divide-dashed border border-dashed sm:grid-cols-2 md:grid-cols-3">
-      {SERVICE_FEATURES.map((feature, index) => (
-        <ServiceTile
-          key={feature.title}
-          feature={feature}
-          color={SERVICE_ACCENTS[index % SERVICE_ACCENTS.length]}
-        />
+      {SERVICE_FEATURES.map((feature) => (
+        <FeatureCard key={feature.title} feature={feature} className="service-tile" />
       ))}
     </div>
   );
@@ -324,63 +289,83 @@ function CatalogCarousel({ onOpen }: { onOpen: (demo: DemoModalData) => void }) 
   );
 }
 
-const AUTO_FEATURES = [
+const AUTO_FEATURES: FeatureModalData[] = [
   {
     title: "Relevamiento",
     icon: Route,
+    headline: "Un mapa claro de en qué se te va el tiempo",
     before: "No sabés bien cuánto tiempo se va en tareas repetidas.",
     after: "Un diagnóstico claro de qué automatizar primero.",
+    improves: [
+      "Un relevamiento de cómo trabaja tu equipo hoy, paso a paso.",
+      "Prioridad clara: qué conviene automatizar primero.",
+      "Diagnóstico sin compromiso, antes de gastar en nada.",
+    ],
   },
   {
     title: "Chatbot IA",
     icon: Bot,
+    headline: "Alguien atendiendo, aunque vos no estés",
     before: "Contestás las mismas preguntas veinte veces por día.",
     after: "El chatbot responde y toma pedidos las 24 horas.",
+    improves: [
+      "Responde consultas y toma pedidos a cualquier hora, incluso de madrugada.",
+      "Menos tiempo tuyo respondiendo lo mismo una y otra vez.",
+      "Deriva a una persona cuando la consulta lo necesita.",
+    ],
   },
   {
     title: "Agenda automática",
     icon: CalendarClock,
+    headline: "Turnos que se acomodan solos",
     before: "Turnos coordinados a mano, con cruces y olvidos.",
     after: "Agenda integrada a WhatsApp o al sitio, sin superposiciones.",
+    improves: [
+      "Turnos y reservas sin choques ni doble reserva.",
+      "Recordatorios automáticos que bajan el ausentismo.",
+      "Se integra a WhatsApp o a tu sitio, sin planillas sueltas.",
+    ],
   },
   {
     title: "Automatización",
     icon: RefreshCw,
+    headline: "Lo repetitivo, resuelto sin que lo pienses",
     before: "Avisos y seguimientos que hacés uno por uno, a mano.",
     after: "Se disparan solos, en el momento justo.",
+    improves: [
+      "Avisos y seguimientos que se disparan solos, en el momento justo.",
+      "Menos tareas manuales repetitivas para el equipo.",
+      "Todo queda registrado, sin depender de que alguien se acuerde.",
+    ],
   },
 ];
 
 function AutoFeatureCard({
   feature,
+  onOpen,
 }: {
-  feature: (typeof AUTO_FEATURES)[number];
+  feature: FeatureModalData;
+  onOpen: (feature: FeatureModalData) => void;
 }) {
   const Icon = feature.icon;
   return (
-    <div className="auto-feature-card">
+    <button type="button" className="auto-feature-card" onClick={() => onOpen(feature)}>
       <Icon className="auto-feature-icon" strokeWidth={1} aria-hidden="true" />
       <h3>{feature.title}</h3>
-      <div className="auto-before-after">
-        <div className="auto-feature-row">
-          <span className="tag tag--antes">Antes</span>
-          <p>{feature.before}</p>
-        </div>
-        <div className="auto-feature-row">
-          <span className="tag tag--despues">Después</span>
-          <p>{feature.after}</p>
-        </div>
-      </div>
-    </div>
+      <p className="auto-feature-teaser">{feature.after}</p>
+      <span className="auto-feature-link">
+        Ver más <span className="arrow">→</span>
+      </span>
+    </button>
   );
 }
 
-function AutoFeatureGrid() {
+function AutoFeatureGrid({ onOpen }: { onOpen: (feature: FeatureModalData) => void }) {
   const shouldReduceMotion = useReducedMotion();
   const grid = (
     <div className="feature-grid auto-grid grid grid-cols-1 divide-x divide-y divide-dashed border border-dashed sm:grid-cols-2">
       {AUTO_FEATURES.map((feature) => (
-        <AutoFeatureCard key={feature.title} feature={feature} />
+        <AutoFeatureCard key={feature.title} feature={feature} onOpen={onOpen} />
       ))}
     </div>
   );
@@ -481,6 +466,7 @@ const FAQ_ITEMS: FaqItem[] = [
 export default function App() {
   const [year] = useState(() => new Date().getFullYear());
   const [demo, setDemo] = useState<DemoModalData | null>(null);
+  const [feature, setFeature] = useState<FeatureModalData | null>(null);
 
   return (
     <KineticGrid globalColor="monochrome">
@@ -609,7 +595,7 @@ export default function App() {
                 ))}
               </ul>
             </div>
-            <AutoFeatureGrid />
+            <AutoFeatureGrid onOpen={setFeature} />
           </div>
 
           <div className="process-panel">
@@ -706,6 +692,11 @@ export default function App() {
       <DemoModal
         demo={demo}
         onClose={() => setDemo(null)}
+        whatsappNumber={WHATSAPP_NUMBER}
+      />
+      <FeatureModal
+        feature={feature}
+        onClose={() => setFeature(null)}
         whatsappNumber={WHATSAPP_NUMBER}
       />
     </KineticGrid>
