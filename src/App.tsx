@@ -20,6 +20,7 @@ import {
   Music2,
   Check,
   Stethoscope,
+  Coffee,
 } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 import KineticGrid from "@/components/ui/kinetic-grid";
@@ -206,6 +207,15 @@ const SISTEMAS: SistemaData[] = [
     description:
       "Agenda, turnos, pacientes y recordatorios para consultorios y centros de salud.",
     icon: Stethoscope,
+  },
+  {
+    href: "https://fjoracoffe.vercel.app/login",
+    label: "Café / Gastronomía",
+    color: "var(--stamp-mustard)",
+    title: "Sistema Punto de Venta Café",
+    description:
+      "Pedidos, cocina, stock e ingresos del día en un solo panel, pensado para cafeterías y locales gastronómicos.",
+    icon: Coffee,
   },
 ];
 
