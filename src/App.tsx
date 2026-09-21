@@ -324,7 +324,7 @@ function AutoFeatureGrid() {
   );
 }
 
-const WHATSAPP_NUMBER = "5491130358596";
+const WHATSAPP_NUMBER = "5491173728937";
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
   "Hola! Vi la página y quiero hacer una consulta para mi negocio.",
 )}`;
