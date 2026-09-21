@@ -329,9 +329,7 @@ const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent
   "Hola! Vi la página y quiero hacer una consulta para mi negocio.",
 )}`;
 
-// TODO: reemplazar por tu link real de Google Calendar cuando lo tengas
-// (Google Calendar → Configuración → Programaciones de citas → 20 min).
-const CALENDAR_URL = "https://calendar.google.com/calendar/appointments";
+const CALENDAR_URL = "https://calendar.app.google/zB6YdjedCFZqJmwo6";
 
 const PARA_QUIEN_ES = [
   "Atendés muchas consultas repetidas (precios, turnos, disponibilidad)",
