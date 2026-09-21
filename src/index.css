@@ -27,14 +27,6 @@
   --shadow: 0 1px 0 rgba(11,31,51,0.45);
 }
 
-/* Bridges the grid-feature-cards component's Tailwind color utilities
-   (text-foreground, fill-foreground, text-muted-foreground, etc.) to
-   this page's own palette instead of shadcn's default theme. */
-@theme{
-  --color-foreground: var(--ink);
-  --color-muted-foreground: var(--ink-soft);
-}
-
 *{box-sizing:border-box;}
 html{-webkit-text-size-adjust:100%;}
 body{
@@ -242,13 +234,60 @@ h2{
 }
 
 /* Page background stays uniform dark — only each individual tile/ficha
-   ("el cuadrado") gets the arena-card color, not the section around it. */
+   ("el cuadrado") gets its own card treatment, matching the sistema-panel
+   and marquee-card visual language used elsewhere on the page. */
 .service-tile{
+  display:flex;
+  flex-direction:column;
   background:var(--tile-bg);
-  --color-foreground:var(--arena);
-  --color-muted-foreground:var(--arena);
+  transition:background-color .18s ease;
 }
-.service-tile h3{ color:var(--arena); }
+.service-tile:hover{
+  background:color-mix(in srgb, var(--tile-bg) 88%, var(--celeste) 12%);
+}
+.service-tile-art{
+  height:110px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.service-tile-icon{
+  width:40px;
+  height:40px;
+  color:var(--arena);
+}
+.service-tile-body{
+  padding:18px 20px 20px;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+.service-tile-body h3{
+  font-family:"Big Shoulders Display", sans-serif;
+  font-weight:700;
+  font-size:17px;
+  margin:0;
+  line-height:1.1;
+  color:var(--arena);
+}
+.service-tile-body p{
+  margin:0;
+  font-size:13px;
+  line-height:1.45;
+  color:var(--ink-soft);
+}
+
+/* ---------- button reset (cards that open the demo popup) ---------- */
+.sistema-panel, .marquee-card{
+  appearance:none;
+  -webkit-appearance:none;
+  margin:0;
+  padding:0;
+  width:100%;
+  font:inherit;
+  text-align:left;
+  cursor:pointer;
+}
 
 /* ---------- stamp badge (shared: sistemas panel, carousel) ---------- */
 .stamp{
@@ -488,10 +527,20 @@ h2{
   margin:0;
   color:var(--ink);
 }
+.auto-before-after{
+  border:1px solid var(--line-strong);
+  border-radius:6px;
+  background:color-mix(in srgb, var(--paper-card) 60%, var(--marino) 40%);
+  overflow:hidden;
+}
 .auto-feature-row{
   display:flex;
   align-items:flex-start;
-  gap:8px;
+  gap:10px;
+  padding:12px 14px;
+}
+.auto-feature-row + .auto-feature-row{
+  border-top:1px dashed var(--line-strong);
 }
 .auto-feature-row p{
   margin:0;
@@ -507,8 +556,8 @@ h2{
   font-weight:600;
   letter-spacing:0.04em;
   text-transform:uppercase;
-  padding:3px 7px;
-  border-radius:3px;
+  padding:4px 10px;
+  border-radius:999px;
 }
 .tag--antes{
   background:color-mix(in srgb, var(--stamp-red) 20%, transparent);
@@ -540,10 +589,17 @@ h2{
   color:var(--stamp-teal);
 }
 
-.work-steps{
+.process-panel{
   margin-top:clamp(28px, 4vw, 40px);
-  padding-top:clamp(28px, 4vw, 40px);
-  border-top:1px dashed var(--line-strong);
+  background:var(--paper-card);
+  border:1px solid var(--line-strong);
+  border-radius:6px;
+  padding:clamp(24px, 4vw, 36px);
+}
+.process-panel .work-steps{
+  margin-top:0;
+  padding-top:0;
+  border-top:none;
 }
 .work-steps h3{
   font-family:"Big Shoulders Display", sans-serif;
@@ -763,6 +819,110 @@ footer{ padding:36px 0 48px; }
 .bubble-btn svg{ width:28px; height:28px; }
 .bubble-btn--whatsapp{ background:#25D366; color:#F8FAFA; }
 .bubble-btn--calendar{ background:var(--celeste); color:var(--marino); }
+
+/* ---------- demo popup (sistemas + catálogo) ---------- */
+.demo-modal-overlay{
+  position:fixed;
+  inset:0;
+  z-index:200;
+  background:color-mix(in srgb, var(--marino) 82%, transparent);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+}
+.demo-modal{
+  display:flex;
+  flex-direction:column;
+  width:min(920px, 100%);
+  height:min(640px, 85vh);
+  background:var(--paper);
+  border:1px solid var(--line-strong);
+  border-radius:8px;
+  overflow:hidden;
+  box-shadow:0 20px 60px rgba(11,31,51,0.55);
+}
+.demo-modal-chrome{
+  flex-shrink:0;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:0 12px;
+  height:42px;
+  background:var(--tile-bg);
+  border-bottom:1px solid var(--line-strong);
+}
+.demo-modal-dots{ display:flex; gap:6px; flex-shrink:0; }
+.demo-modal-dots span{
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  background:var(--line-strong);
+}
+.demo-modal-dots span:nth-child(1){ background:#e0645c; }
+.demo-modal-dots span:nth-child(2){ background:#e0b054; }
+.demo-modal-dots span:nth-child(3){ background:#5cb86b; }
+.demo-modal-title{
+  flex:1;
+  min-width:0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  font-size:12px;
+  color:var(--ink-soft);
+}
+.demo-modal-close{
+  flex-shrink:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:26px;
+  height:26px;
+  border:none;
+  border-radius:4px;
+  background:transparent;
+  color:var(--ink-soft);
+  cursor:pointer;
+}
+.demo-modal-close:hover{ background:color-mix(in srgb, var(--ink) 12%, transparent); color:var(--ink); }
+.demo-modal-frame{
+  flex:1;
+  min-height:0;
+  background:var(--blanco);
+}
+.demo-modal-frame iframe{
+  display:block;
+  width:100%;
+  height:100%;
+  border:none;
+}
+.demo-modal-footer{
+  flex-shrink:0;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:14px 18px;
+  background:var(--paper-card);
+  border-top:1px solid var(--line-strong);
+}
+.demo-modal-link{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-family:"IBM Plex Mono", monospace;
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:0.02em;
+  color:var(--ink-soft);
+  text-decoration:none;
+}
+.demo-modal-link:hover{ color:var(--ink); }
+@media (max-width:600px){
+  .demo-modal-overlay{ padding:0; }
+  .demo-modal{ width:100%; height:100%; border-radius:0; }
+  .demo-modal-footer{ flex-direction:column; align-items:stretch; }
+}
 
 @media (prefers-reduced-motion: reduce){
   *{ transition:none !important; }

@@ -1,3 +1,5 @@
+import type { DemoModalData } from "./demo-modal";
+
 export interface RuixenCardProps {
   title: string;
   subtitle: string;
@@ -17,15 +19,20 @@ const variantColors: Record<NonNullable<RuixenCardProps["badge"]>["variant"], st
   teal: "var(--stamp-teal)",
 };
 
-function MarqueeCard({ card }: { card: RuixenCardProps }) {
+function MarqueeCard({
+  card,
+  onOpen,
+}: {
+  card: RuixenCardProps;
+  onOpen: (demo: DemoModalData) => void;
+}) {
   const accent = card.badge ? variantColors[card.badge.variant] : "var(--celeste)";
   const Icon = card.icon;
 
   return (
-    <a
-      href={card.href}
-      target="_blank"
-      rel="noopener noreferrer"
+    <button
+      type="button"
+      onClick={() => onOpen({ title: card.title, url: card.href })}
       className="marquee-card"
       style={{ borderColor: "var(--line-strong)" }}
     >
@@ -64,7 +71,7 @@ function MarqueeCard({ card }: { card: RuixenCardProps }) {
           <span className="arrow">→</span>
         </div>
       </div>
-    </a>
+    </button>
   );
 }
 
@@ -72,10 +79,12 @@ function MarqueeRow({
   cards,
   direction,
   duration,
+  onOpen,
 }: {
   cards: RuixenCardProps[];
   direction: "left" | "right";
   duration: number;
+  onOpen: (demo: DemoModalData) => void;
 }) {
   const looped = [...cards, ...cards];
 
@@ -86,20 +95,26 @@ function MarqueeRow({
         style={{ animationDuration: `${duration}s` }}
       >
         {looped.map((card, i) => (
-          <MarqueeCard key={`${card.href}-${i}`} card={card} />
+          <MarqueeCard key={`${card.href}-${i}`} card={card} onOpen={onOpen} />
         ))}
       </div>
     </div>
   );
 }
 
-export default function CatalogMarquee({ cards }: { cards: RuixenCardProps[] }) {
+export default function CatalogMarquee({
+  cards,
+  onOpen,
+}: {
+  cards: RuixenCardProps[];
+  onOpen: (demo: DemoModalData) => void;
+}) {
   const reversed = [...cards].reverse();
 
   return (
     <div className="marquee-stack">
-      <MarqueeRow cards={cards} direction="left" duration={48} />
-      <MarqueeRow cards={reversed} direction="right" duration={58} />
+      <MarqueeRow cards={cards} direction="left" duration={48} onOpen={onOpen} />
+      <MarqueeRow cards={reversed} direction="right" duration={58} onOpen={onOpen} />
     </div>
   );
 }

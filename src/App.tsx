@@ -23,7 +23,6 @@ import {
 } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 import KineticGrid from "@/components/ui/kinetic-grid";
-import { FeatureCard } from "@/components/ui/grid-feature-cards";
 import CatalogMarquee, {
   type RuixenCardProps,
 } from "@/components/ui/catalog-marquee";
@@ -31,6 +30,14 @@ import WhatsappBubble from "@/components/ui/whatsapp-bubble";
 import CalendarBubble from "@/components/ui/calendar-bubble";
 import AutodiagnosticoForm from "@/components/ui/autodiagnostico";
 import FaqAccordion, { type FaqItem } from "@/components/ui/faq-accordion";
+import DemoModal, { type DemoModalData } from "@/components/ui/demo-modal";
+
+const SERVICE_ACCENTS = [
+  "var(--stamp-red)",
+  "var(--stamp-blue)",
+  "var(--stamp-mustard)",
+  "var(--stamp-teal)",
+];
 
 const SERVICE_FEATURES = [
   {
@@ -87,12 +94,42 @@ const SERVICE_FEATURES = [
   },
 ];
 
+function ServiceTile({
+  feature,
+  color,
+}: {
+  feature: (typeof SERVICE_FEATURES)[number];
+  color: string;
+}) {
+  const Icon = feature.icon;
+  return (
+    <div className="service-tile">
+      <div
+        className="service-tile-art"
+        style={{
+          background: `linear-gradient(155deg, color-mix(in srgb, ${color} 22%, var(--marino)) 0%, var(--marino) 78%)`,
+        }}
+      >
+        <Icon className="service-tile-icon" strokeWidth={1} aria-hidden="true" />
+      </div>
+      <div className="service-tile-body">
+        <h3>{feature.title}</h3>
+        <p>{feature.description}</p>
+      </div>
+    </div>
+  );
+}
+
 function ServiceFeatureGrid() {
   const shouldReduceMotion = useReducedMotion();
   const grid = (
     <div className="feature-grid services-grid grid grid-cols-1 divide-x divide-y divide-dashed border border-dashed sm:grid-cols-2 md:grid-cols-3">
-      {SERVICE_FEATURES.map((feature) => (
-        <FeatureCard key={feature.title} feature={feature} className="service-tile" />
+      {SERVICE_FEATURES.map((feature, index) => (
+        <ServiceTile
+          key={feature.title}
+          feature={feature}
+          color={SERVICE_ACCENTS[index % SERVICE_ACCENTS.length]}
+        />
       ))}
     </div>
   );
@@ -207,13 +244,20 @@ const SISTEMAS: SistemaData[] = [
   },
 ];
 
-function SistemaPanel({ href, label, color, title, description, icon: Icon }: SistemaData) {
+function SistemaPanel({
+  href,
+  label,
+  color,
+  title,
+  description,
+  icon: Icon,
+  onOpen,
+}: SistemaData & { onOpen: (demo: DemoModalData) => void }) {
   return (
-    <a
+    <button
+      type="button"
       className="sistema-panel"
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
+      onClick={() => onOpen({ title, url: href })}
     >
       <div
         className="sistema-art"
@@ -234,16 +278,16 @@ function SistemaPanel({ href, label, color, title, description, icon: Icon }: Si
           <span className="arrow">→</span>
         </div>
       </div>
-    </a>
+    </button>
   );
 }
 
-function SistemasSplit() {
+function SistemasSplit({ onOpen }: { onOpen: (demo: DemoModalData) => void }) {
   const shouldReduceMotion = useReducedMotion();
   const grid = (
     <div className="sistemas-split">
       {SISTEMAS.map((sistema) => (
-        <SistemaPanel key={sistema.href} {...sistema} />
+        <SistemaPanel key={sistema.href} {...sistema} onOpen={onOpen} />
       ))}
     </div>
   );
@@ -262,9 +306,9 @@ function SistemasSplit() {
   );
 }
 
-function CatalogCarousel() {
+function CatalogCarousel({ onOpen }: { onOpen: (demo: DemoModalData) => void }) {
   const shouldReduceMotion = useReducedMotion();
-  const carousel = <CatalogMarquee cards={CATALOG} />;
+  const carousel = <CatalogMarquee cards={CATALOG} onOpen={onOpen} />;
 
   if (shouldReduceMotion) return carousel;
 
@@ -317,13 +361,15 @@ function AutoFeatureCard({
     <div className="auto-feature-card">
       <Icon className="auto-feature-icon" strokeWidth={1} aria-hidden="true" />
       <h3>{feature.title}</h3>
-      <div className="auto-feature-row">
-        <span className="tag tag--antes">Antes</span>
-        <p>{feature.before}</p>
-      </div>
-      <div className="auto-feature-row">
-        <span className="tag tag--despues">Después</span>
-        <p>{feature.after}</p>
+      <div className="auto-before-after">
+        <div className="auto-feature-row">
+          <span className="tag tag--antes">Antes</span>
+          <p>{feature.before}</p>
+        </div>
+        <div className="auto-feature-row">
+          <span className="tag tag--despues">Después</span>
+          <p>{feature.after}</p>
+        </div>
       </div>
     </div>
   );
@@ -434,6 +480,7 @@ const FAQ_ITEMS: FaqItem[] = [
 
 export default function App() {
   const [year] = useState(() => new Date().getFullYear());
+  const [demo, setDemo] = useState<DemoModalData | null>(null);
 
   return (
     <KineticGrid globalColor="monochrome">
@@ -525,7 +572,7 @@ export default function App() {
               y si algo se parece a lo que necesitás, hablamos.
             </p>
           </div>
-          <CatalogCarousel />
+          <CatalogCarousel onOpen={setDemo} />
         </section>
 
         <section className="wrap" id="sistemas">
@@ -537,7 +584,7 @@ export default function App() {
               Entrá y recorrela con datos de ejemplo.
             </p>
           </div>
-          <SistemasSplit />
+          <SistemasSplit onOpen={setDemo} />
         </section>
 
         <section className="wrap" id="automatizaciones">
@@ -565,31 +612,33 @@ export default function App() {
             <AutoFeatureGrid />
           </div>
 
-          <div className="work-steps">
-            <h3>Cómo trabajo</h3>
-            <ol>
-              {WORK_STEPS.map((step, index) => (
-                <li className="work-step" key={step.title}>
-                  <span className="work-step-num mono">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <div>
-                    <h4>{step.title}</h4>
-                    <p>{step.description}</p>
-                  </div>
-                </li>
-              ))}
-            </ol>
-          </div>
+          <div className="process-panel">
+            <div className="work-steps">
+              <h3>Cómo trabajo</h3>
+              <ol>
+                {WORK_STEPS.map((step, index) => (
+                  <li className="work-step" key={step.title}>
+                    <span className="work-step-num mono">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <div>
+                      <h4>{step.title}</h4>
+                      <p>{step.description}</p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </div>
 
-          <div className="budget-note">
-            <h3>¿Y el presupuesto?</h3>
-            <p>
-              Depende de la cantidad de sistemas a implementar y de la
-              complejidad de cada uno. Por eso el presupuesto se entrega
-              después del diagnóstico inicial, no antes — así cotizamos lo
-              que realmente necesitás, ni de más ni de menos.
-            </p>
+            <div className="budget-note">
+              <h3>¿Y el presupuesto?</h3>
+              <p>
+                Depende de la cantidad de sistemas a implementar y de la
+                complejidad de cada uno. Por eso el presupuesto se entrega
+                después del diagnóstico inicial, no antes — así cotizamos lo
+                que realmente necesitás, ni de más ni de menos.
+              </p>
+            </div>
           </div>
         </section>
 
@@ -653,6 +702,12 @@ export default function App() {
         <CalendarBubble href={CALENDAR_URL} />
         <WhatsappBubble href={WHATSAPP_URL} />
       </div>
+
+      <DemoModal
+        demo={demo}
+        onClose={() => setDemo(null)}
+        whatsappNumber={WHATSAPP_NUMBER}
+      />
     </KineticGrid>
   );
 }
