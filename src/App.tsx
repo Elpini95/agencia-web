@@ -187,6 +187,7 @@ type SistemaData = {
   title: string;
   description: string;
   icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+  image: string;
 };
 
 const SISTEMAS: SistemaData[] = [
@@ -198,6 +199,7 @@ const SISTEMAS: SistemaData[] = [
     description:
       "Financiero, cobranzas, stock, presupuestos y CRM en un solo panel, todo conectado.",
     icon: Workflow,
+    image: "/sistemas/gestion.jpg",
   },
   {
     href: "https://fjoraconsultorios.vercel.app/",
@@ -207,6 +209,7 @@ const SISTEMAS: SistemaData[] = [
     description:
       "Agenda, turnos, pacientes y recordatorios para consultorios y centros de salud.",
     icon: Stethoscope,
+    image: "/sistemas/consultorios.jpg",
   },
   {
     href: "https://fjoracoffe.vercel.app/login",
@@ -216,6 +219,7 @@ const SISTEMAS: SistemaData[] = [
     description:
       "Pedidos, cocina, stock e ingresos del día en un solo panel, pensado para cafeterías y locales gastronómicos.",
     icon: Coffee,
+    image: "/sistemas/cafe.jpg",
   },
 ];
 
@@ -226,6 +230,7 @@ function SistemaPanel({
   title,
   description,
   icon: Icon,
+  image,
   onOpen,
 }: SistemaData & { onOpen: (demo: DemoModalData) => void }) {
   return (
@@ -240,7 +245,13 @@ function SistemaPanel({
           background: `linear-gradient(155deg, color-mix(in srgb, ${color} 22%, var(--marino)) 0%, var(--marino) 78%)`,
         }}
       >
-        <Icon className="sistema-icon" strokeWidth={1} aria-hidden="true" />
+        <img src={image} alt="" loading="lazy" />
+        <Icon
+          className="sistema-icon sistema-icon--badge"
+          style={{ color }}
+          strokeWidth={1.5}
+          aria-hidden="true"
+        />
       </div>
       <div className="sistema-body">
         <span className="stamp" style={{ color }}>
