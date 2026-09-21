@@ -18,6 +18,7 @@ import {
   Dumbbell,
   Scissors,
   Music2,
+  Check,
 } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 import KineticGrid from "@/components/ui/kinetic-grid";
@@ -25,6 +26,9 @@ import { FeatureCard } from "@/components/ui/grid-feature-cards";
 import CatalogMarquee, {
   type RuixenCardProps,
 } from "@/components/ui/catalog-marquee";
+import WhatsappBubble from "@/components/ui/whatsapp-bubble";
+import AutodiagnosticoForm from "@/components/ui/autodiagnostico";
+import FaqAccordion, { type FaqItem } from "@/components/ui/faq-accordion";
 
 const SERVICE_FEATURES = [
   {
@@ -320,8 +324,76 @@ function AutoFeatureGrid() {
   );
 }
 
-const WHATSAPP_URL =
-  "https://wa.me/5491130358596?text=Hola!%20Vi%20la%20p%C3%A1gina%20y%20quiero%20hacer%20una%20consulta%20para%20mi%20negocio.";
+const WHATSAPP_NUMBER = "5491130358596";
+const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+  "Hola! Vi la página y quiero hacer una consulta para mi negocio.",
+)}`;
+
+// TODO: reemplazar por tu link real de Google Calendar cuando lo tengas
+// (Google Calendar → Configuración → Programaciones de citas → 20 min).
+const CALENDAR_URL = "https://calendar.google.com/calendar/appointments";
+
+const PARA_QUIEN_ES = [
+  "Atendés muchas consultas repetidas (precios, turnos, disponibilidad)",
+  "Coordinás turnos o pedidos a mano, por WhatsApp o papel",
+  "Cargás la misma información en más de un lugar",
+];
+
+const WORK_STEPS = [
+  {
+    title: "Diagnóstico inicial",
+    description: "Relevamos cómo trabaja tu equipo hoy, paso a paso.",
+  },
+  {
+    title: "Un sistema a la vez",
+    description: "Empezamos por el que genere mayor ahorro de tiempo.",
+  },
+  {
+    title: "Implementación y prueba",
+    description: "Lo ponemos a funcionar y lo probamos junto a tu equipo.",
+  },
+  {
+    title: "Capacitación breve",
+    description: "Para que todos sepan usarlo desde el primer día.",
+  },
+  {
+    title: "Ajuste y soporte",
+    description: "Acompañamos hasta que funcione como tiene que funcionar.",
+  },
+];
+
+const FAQ_ITEMS: FaqItem[] = [
+  {
+    question: "¿Cuánto tarda en estar lista mi página?",
+    answer:
+      "Depende del alcance: una landing simple puede estar en pocos días. Un sistema a medida lleva más, y el plazo se define en el diagnóstico inicial.",
+  },
+  {
+    question: "¿El precio incluye hosting y dominio?",
+    answer:
+      "El dominio y el hosting corren por separado (son servicios de terceros, con costo anual bajo). Te ayudamos a contratarlos y configurarlos sin vueltas.",
+  },
+  {
+    question: "¿Puedo pedir cambios después de la entrega?",
+    answer:
+      "Sí. Los primeros ajustes post-entrega están contemplados, y después podés sumar el mantenimiento mensual para cambios continuos.",
+  },
+  {
+    question: "¿Tienen mantenimiento mensual?",
+    answer:
+      "Sí, es uno de los servicios del catálogo: cambios, contenido al día y que el sitio nunca se caiga.",
+  },
+  {
+    question: "¿Qué pasa si no tengo fotos o contenido propio?",
+    answer:
+      "No pasa nada. Te ayudamos a definir qué contenido necesitás y de dónde sacarlo, o lo resolvemos juntos en el diagnóstico inicial.",
+  },
+  {
+    question: "¿Cómo es la forma de pago?",
+    answer:
+      "Se coordina caso a caso después del presupuesto, según el tamaño del proyecto. Lo conversamos directo por WhatsApp o en la consulta.",
+  },
+];
 
 export default function App() {
   const [year] = useState(() => new Date().getFullYear());
@@ -426,24 +498,92 @@ export default function App() {
                 atención inmediata, con un chatbot con inteligencia
                 artificial.
               </p>
+              <ul className="para-quien-list">
+                {PARA_QUIEN_ES.map((item) => (
+                  <li key={item} className="para-quien-item">
+                    <Check size={16} aria-hidden="true" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
             <AutoFeatureGrid />
           </div>
+
+          <div className="work-steps">
+            <h3>Cómo trabajo</h3>
+            <ol>
+              {WORK_STEPS.map((step, index) => (
+                <li className="work-step" key={step.title}>
+                  <span className="work-step-num mono">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <div>
+                    <h4>{step.title}</h4>
+                    <p>{step.description}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </div>
+
+          <div className="budget-note">
+            <h3>¿Y el presupuesto?</h3>
+            <p>
+              Depende de la cantidad de sistemas a implementar y de la
+              complejidad de cada uno. Por eso el presupuesto se entrega
+              después del diagnóstico inicial, no antes — así cotizamos lo
+              que realmente necesitás, ni de más ni de menos.
+            </p>
+          </div>
+        </section>
+
+        <section className="wrap" id="autodiagnostico">
+          <div className="section-head">
+            <p className="section-num">04 — Autodiagnóstico</p>
+            <h2>¿Cuánto tiempo estás perdiendo?</h2>
+            <p className="section-note">
+              Respondé estas cuatro preguntas y te decimos, en horas, cuánto
+              podrías estar ahorrando.
+            </p>
+          </div>
+          <AutodiagnosticoForm whatsappNumber={WHATSAPP_NUMBER} />
+        </section>
+
+        <section className="wrap" id="faq">
+          <div className="section-head">
+            <p className="section-num">05 — Preguntas frecuentes</p>
+            <h2>Antes de escribirnos</h2>
+            <p className="section-note">
+              Las dudas más comunes antes de arrancar un proyecto.
+            </p>
+          </div>
+          <FaqAccordion items={FAQ_ITEMS} />
         </section>
 
         <section className="wrap cta-block">
           <div>
-            <p className="section-num">04 — Contacto</p>
+            <p className="section-num">06 — Contacto</p>
             <h2>Contanos tu idea y nosotros armamos tu sistema.</h2>
           </div>
-          <a
-            className="btn btn-solid"
-            href={WHATSAPP_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Escribinos por WhatsApp →
-          </a>
+          <div className="cta-actions">
+            <a
+              className="btn btn-solid"
+              href={WHATSAPP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Escribinos por WhatsApp →
+            </a>
+            <a
+              className="btn btn-ghost"
+              href={CALENDAR_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Agendar consulta gratuita (20 min) →
+            </a>
+          </div>
         </section>
       </main>
 
@@ -453,6 +593,8 @@ export default function App() {
           <span>© {year}</span>
         </div>
       </footer>
+
+      <WhatsappBubble href={WHATSAPP_URL} />
     </KineticGrid>
   );
 }
