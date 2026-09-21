@@ -39,68 +39,107 @@ const SERVICE_FEATURES = [
   {
     title: "Landing page",
     icon: LayoutTemplate,
+    category: "presencia",
     description:
       "Una página, un objetivo: que te escriban o te compren. Ideal para lanzar rápido.",
   },
   {
     title: "Sitio institucional",
     icon: Building2,
+    category: "presencia",
     description:
       "Quiénes son, qué hacen, dónde están. La carta de presentación de tu negocio.",
   },
   {
     title: "Blog",
     icon: Newspaper,
+    category: "presencia",
     description:
       "Artículos organizados, buscador y buena base para que te encuentren en Google.",
   },
   {
     title: "Panel de administrador",
     icon: LayoutDashboard,
+    category: "herramientas",
     description:
       "Un lugar propio para cargar productos, turnos o novedades sin tocar código.",
   },
   {
     title: "Ecommerce",
     icon: ShoppingCart,
+    category: "herramientas",
     description: "Catálogo, carrito, checkout y stock. Tu vidriera abierta las 24 horas.",
   },
   {
     title: "Sistema a medida",
     icon: Workflow,
+    category: "herramientas",
     description:
       "Gestión de turnos, pedidos, reservas o lo que tu operación necesite resolver.",
   },
   {
     title: "App a medida",
     icon: Smartphone,
+    category: "herramientas",
     description: "Una herramienta propia, pensada para cómo trabajás vos y tu equipo.",
   },
   {
     title: "Consultoría de procesos",
     icon: ListChecks,
+    category: "acompañamiento",
     description:
       "Relevamos cómo trabaja tu equipo hoy y ordenamos lo que se puede simplificar o digitalizar.",
   },
   {
     title: "Mantenimiento mensual",
     icon: Wrench,
+    category: "acompañamiento",
     description:
       "Cambios, contenido al día y que el sitio nunca se caiga. Vos avisás, nosotros lo resolvemos.",
   },
 ];
 
+const SERVICE_CATEGORIES = [
+  { key: "presencia", label: "Presencia online", cols: "sm:grid-cols-3" },
+  {
+    key: "herramientas",
+    label: "Herramientas para tu negocio",
+    cols: "sm:grid-cols-2 lg:grid-cols-4",
+  },
+  { key: "acompañamiento", label: "Acompañamiento", cols: "sm:grid-cols-2" },
+];
+
+function ServiceCategoryGroup({
+  category,
+}: {
+  category: (typeof SERVICE_CATEGORIES)[number];
+}) {
+  const items = SERVICE_FEATURES.filter((f) => f.category === category.key);
+  return (
+    <div className="services-group">
+      <p className="services-group-label mono">{category.label}</p>
+      <div
+        className={`feature-grid services-grid grid grid-cols-1 divide-x divide-y divide-dashed border border-dashed ${category.cols}`}
+      >
+        {items.map((feature) => (
+          <FeatureCard key={feature.title} feature={feature} className="service-tile" />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function ServiceFeatureGrid() {
   const shouldReduceMotion = useReducedMotion();
-  const grid = (
-    <div className="feature-grid services-grid grid grid-cols-1 divide-x divide-y divide-dashed border border-dashed sm:grid-cols-2 md:grid-cols-3">
-      {SERVICE_FEATURES.map((feature) => (
-        <FeatureCard key={feature.title} feature={feature} className="service-tile" />
+  const content = (
+    <div className="services-groups">
+      {SERVICE_CATEGORIES.map((category) => (
+        <ServiceCategoryGroup key={category.key} category={category} />
       ))}
     </div>
   );
 
-  if (shouldReduceMotion) return grid;
+  if (shouldReduceMotion) return content;
 
   return (
     <motion.div
@@ -109,7 +148,7 @@ function ServiceFeatureGrid() {
       viewport={{ once: true }}
       transition={{ delay: 0.2, duration: 0.8 }}
     >
-      {grid}
+      {content}
     </motion.div>
   );
 }

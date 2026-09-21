@@ -234,6 +234,20 @@ h2{
 /* ---------- shared feature grid (services / catalog / automations) ---------- */
 .feature-grid, .feature-grid > *{ border-color:var(--line-strong); }
 .feature-grid{ background:var(--paper); }
+
+.services-groups{
+  display:flex;
+  flex-direction:column;
+  gap:clamp(28px, 4vw, 44px);
+}
+.services-group-label{
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  color:var(--stamp-teal);
+  margin:0 0 14px;
+}
 .feature-grid h3{
   font-family:"Big Shoulders Display", sans-serif;
   font-weight:700;
