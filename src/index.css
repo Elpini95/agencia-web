@@ -411,7 +411,7 @@ h2{
 /* ---------- sistemas split (demo embebida en vivo) ---------- */
 .sistemas-split{
   display:grid;
-  grid-template-columns:repeat(3, 1fr);
+  grid-template-columns:repeat(4, 1fr);
   border:1px solid var(--line-strong);
 }
 .sistema-panel{
@@ -499,7 +499,9 @@ h2{
 .sistema-panel:hover .sistema-cta .arrow{ transform:translateX(4px); }
 @media (max-width: 900px){
   .sistemas-split{ grid-template-columns:1fr 1fr; }
-  .sistema-panel:nth-child(3){ border-left:none; border-top:1px dashed var(--line-strong); grid-column:span 2; }
+  .sistema-panel{ border-left:none; }
+  .sistema-panel:nth-child(2n){ border-left:1px dashed var(--line-strong); }
+  .sistema-panel:nth-child(n+3){ border-top:1px dashed var(--line-strong); }
 }
 @media (max-width: 600px){
   .sistemas-split{ grid-template-columns:1fr; }

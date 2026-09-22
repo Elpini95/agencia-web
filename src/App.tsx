@@ -21,6 +21,7 @@ import {
   Check,
   Stethoscope,
   Coffee,
+  Building,
 } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 import KineticGrid from "@/components/ui/kinetic-grid";
@@ -259,6 +260,16 @@ const SISTEMAS: SistemaData[] = [
       "Pedidos, cocina, stock e ingresos del día en un solo panel, pensado para cafeterías y locales gastronómicos.",
     icon: Coffee,
     image: "/sistemas/cafe.jpg",
+  },
+  {
+    href: "https://fjorapropiedades.vercel.app",
+    label: "Inmobiliaria / Alquileres",
+    color: "var(--stamp-blue)",
+    title: "Sistema de Propiedades y Alquileres",
+    description:
+      "Ocupación, mantenimiento, cobros y vencimientos de contrato en un solo panel, para inmobiliarias y administradores de alquileres.",
+    icon: Building,
+    image: "/sistemas/propiedades.jpg",
   },
 ];
 
