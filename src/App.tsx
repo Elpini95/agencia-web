@@ -32,99 +32,53 @@ import CatalogMarquee, {
 import WhatsappBubble from "@/components/ui/whatsapp-bubble";
 import CalendarBubble from "@/components/ui/calendar-bubble";
 import AutodiagnosticoForm from "@/components/ui/autodiagnostico";
-import FaqAccordion, { type FaqItem } from "@/components/ui/faq-accordion";
+import FaqAccordion from "@/components/ui/faq-accordion";
 import DemoModal, { type DemoModalData } from "@/components/ui/demo-modal";
 import FeatureModal, { type FeatureModalData } from "@/components/ui/feature-modal";
+import LanguageSwitcher from "@/components/ui/language-switcher";
+import { useLanguage } from "@/i18n/LanguageContext";
 
-const SERVICE_FEATURES = [
-  {
-    title: "Landing page",
-    icon: LayoutTemplate,
-    category: "presencia",
-    description:
-      "Una página, un objetivo: que te escriban o te compren. Ideal para lanzar rápido.",
-  },
-  {
-    title: "Sitio institucional",
-    icon: Building2,
-    category: "presencia",
-    description:
-      "Quiénes son, qué hacen, dónde están. La carta de presentación de tu negocio.",
-  },
-  {
-    title: "Blog",
-    icon: Newspaper,
-    category: "presencia",
-    description:
-      "Artículos organizados, buscador y buena base para que te encuentren en Google.",
-  },
-  {
-    title: "Panel de administrador",
-    icon: LayoutDashboard,
-    category: "herramientas",
-    description:
-      "Un lugar propio para cargar productos, turnos o novedades sin tocar código.",
-  },
-  {
-    title: "Ecommerce",
-    icon: ShoppingCart,
-    category: "herramientas",
-    description: "Catálogo, carrito, checkout y stock. Tu vidriera abierta las 24 horas.",
-  },
-  {
-    title: "Sistema a medida",
-    icon: Workflow,
-    category: "herramientas",
-    description:
-      "Gestión de turnos, pedidos, reservas o lo que tu operación necesite resolver.",
-  },
-  {
-    title: "App a medida",
-    icon: Smartphone,
-    category: "herramientas",
-    description: "Una herramienta propia, pensada para cómo trabajás vos y tu equipo.",
-  },
-  {
-    title: "Consultoría de procesos",
-    icon: ListChecks,
-    category: "acompañamiento",
-    description:
-      "Relevamos cómo trabaja tu equipo hoy y ordenamos lo que se puede simplificar o digitalizar.",
-  },
-  {
-    title: "Mantenimiento mensual",
-    icon: Wrench,
-    category: "acompañamiento",
-    description:
-      "Cambios, contenido al día y que el sitio nunca se caiga. Vos avisás, nosotros lo resolvemos.",
-  },
-];
+const SERVICE_META = [
+  { id: "landing", icon: LayoutTemplate, category: "presencia" },
+  { id: "institucional", icon: Building2, category: "presencia" },
+  { id: "blog", icon: Newspaper, category: "presencia" },
+  { id: "panel", icon: LayoutDashboard, category: "herramientas" },
+  { id: "ecommerce", icon: ShoppingCart, category: "herramientas" },
+  { id: "sistemaMedida", icon: Workflow, category: "herramientas" },
+  { id: "appMedida", icon: Smartphone, category: "herramientas" },
+  { id: "consultoria", icon: ListChecks, category: "acompanamiento" },
+  { id: "mantenimiento", icon: Wrench, category: "acompanamiento" },
+] as const;
 
-const SERVICE_CATEGORIES = [
-  { key: "presencia", label: "Presencia online", cols: "sm:grid-cols-3" },
-  {
-    key: "herramientas",
-    label: "Herramientas para tu negocio",
-    cols: "sm:grid-cols-2 lg:grid-cols-4",
-  },
-  { key: "acompañamiento", label: "Acompañamiento", cols: "sm:grid-cols-2" },
-];
+const SERVICE_CATEGORY_META = [
+  { key: "presencia", cols: "sm:grid-cols-3" },
+  { key: "herramientas", cols: "sm:grid-cols-2 lg:grid-cols-4" },
+  { key: "acompanamiento", cols: "sm:grid-cols-2" },
+] as const;
 
 function ServiceCategoryGroup({
   category,
 }: {
-  category: (typeof SERVICE_CATEGORIES)[number];
+  category: (typeof SERVICE_CATEGORY_META)[number];
 }) {
-  const items = SERVICE_FEATURES.filter((f) => f.category === category.key);
+  const { t } = useLanguage();
+  const items = SERVICE_META.filter((f) => f.category === category.key);
   return (
     <div className="services-group">
-      <p className="services-group-label mono">{category.label}</p>
+      <p className="services-group-label mono">{t.servicios.categories[category.key]}</p>
       <div
         className={`feature-grid services-grid grid grid-cols-1 divide-x divide-y divide-dashed border border-dashed ${category.cols}`}
       >
-        {items.map((feature) => (
-          <FeatureCard key={feature.title} feature={feature} className="service-tile" />
-        ))}
+        {items.map((meta) => {
+          const text = t.servicios.items[meta.id];
+          return (
+            <FeatureCard
+              key={meta.id}
+              feature={{ title: text.title, icon: meta.icon, description: text.description }}
+              className="service-tile"
+            />
+          );
+        })}
       </div>
     </div>
   );
@@ -134,7 +88,7 @@ function ServiceFeatureGrid() {
   const shouldReduceMotion = useReducedMotion();
   const content = (
     <div className="services-groups">
-      {SERVICE_CATEGORIES.map((category) => (
+      {SERVICE_CATEGORY_META.map((category) => (
         <ServiceCategoryGroup key={category.key} category={category} />
       ))}
     </div>
@@ -154,71 +108,57 @@ function ServiceFeatureGrid() {
   );
 }
 
-const CATALOG: RuixenCardProps[] = [
+const CATALOG_META = [
   {
+    id: "gastronomia",
     href: "https://gastronomia-demo.vercel.app/",
-    title: "Restaurantes y bares",
-    subtitle:
-      "Carta online, fotos que dan hambre y reserva de mesa por WhatsApp en dos toques.",
     icon: UtensilsCrossed,
     image: "/catalogo/gastronomia.jpg",
-    badge: { text: "Gastronomía", variant: "red" },
+    variant: "red",
   },
   {
+    id: "ferreteria",
     href: "https://corralon-demo.vercel.app/",
-    title: "Materiales y ferretería",
-    subtitle:
-      "Catálogo por categorías, precios claros y pedidos que llegan directo por WhatsApp.",
     icon: Hammer,
     image: "/catalogo/corralon.jpg",
-    badge: { text: "Corralón / Ferretería", variant: "blue" },
+    variant: "blue",
   },
   {
+    id: "gimnasio",
     href: "https://gym-demo-ten-rosy.vercel.app/",
-    title: "Gimnasios y boxes",
-    subtitle:
-      "Planes, horarios de clases y alta de socios nuevos sin planillas ni vueltas.",
     icon: Dumbbell,
     image: "/catalogo/gimnasio.jpg",
-    badge: { text: "Gimnasio", variant: "mustard" },
+    variant: "mustard",
   },
   {
+    id: "mecanico",
     href: "https://mecanico-demo.vercel.app/",
-    title: "Talleres mecánicos",
-    subtitle:
-      "Servicios, turnos y presupuesto rápido para que el cliente no tenga que llamar.",
     icon: Wrench,
     image: "/catalogo/mecanico.jpg",
-    badge: { text: "Mecánico", variant: "teal" },
+    variant: "teal",
   },
   {
+    id: "salon",
     href: "https://salon-demo-web-tau.vercel.app/",
-    title: "Peluquerías y estética",
-    subtitle:
-      "Reserva de turnos, galería de trabajos y contacto directo con la profesional.",
     icon: Scissors,
     image: "/catalogo/salon.jpg",
-    badge: { text: "Salón / Belleza", variant: "red" },
+    variant: "red",
   },
   {
+    id: "ecommerce",
     href: "https://lilianacarro.vercel.app/",
-    title: "Tienda online",
-    subtitle:
-      "Catálogo, carrito y checkout completo. Para marcas que quieren vender online en serio.",
     icon: ShoppingCart,
     image: "/catalogo/ecommerce.jpg",
-    badge: { text: "Ecommerce", variant: "blue" },
+    variant: "blue",
   },
   {
+    id: "dj",
     href: "https://djs-demo.vercel.app/",
-    title: "DJs y música en vivo",
-    subtitle:
-      "Portfolio de sets, disponibilidad de fechas y cotización de eventos directo por WhatsApp.",
     icon: Music2,
     image: "/catalogo/dj.jpg",
-    badge: { text: "DJ / Eventos", variant: "mustard" },
+    variant: "mustard",
   },
-];
+] as const;
 
 type SistemaData = {
   href: string;
@@ -230,48 +170,36 @@ type SistemaData = {
   image: string;
 };
 
-const SISTEMAS: SistemaData[] = [
+const SISTEMAS_META = [
   {
+    id: "gestion",
     href: "https://crm-fjoralabs.vercel.app/",
-    label: "Sistema de gestión",
     color: "var(--stamp-teal)",
-    title: "Sistema de Gestión para PYMES",
-    description:
-      "Financiero, cobranzas, stock, presupuestos y CRM en un solo panel, todo conectado.",
     icon: Workflow,
     image: "/sistemas/gestion.jpg",
   },
   {
+    id: "consultorios",
     href: "https://fjoraconsultorios.vercel.app/",
-    label: "Consultorios",
     color: "var(--stamp-red)",
-    title: "Sistema Consultorios",
-    description:
-      "Agenda, turnos, pacientes y recordatorios para consultorios y centros de salud.",
     icon: Stethoscope,
     image: "/sistemas/consultorios.jpg",
   },
   {
+    id: "cafe",
     href: "https://fjoracoffe.vercel.app/login",
-    label: "Café / Gastronomía",
     color: "var(--stamp-mustard)",
-    title: "Sistema Punto de Venta Café",
-    description:
-      "Pedidos, cocina, stock e ingresos del día en un solo panel, pensado para cafeterías y locales gastronómicos.",
     icon: Coffee,
     image: "/sistemas/cafe.jpg",
   },
   {
+    id: "propiedades",
     href: "https://fjorapropiedades.vercel.app",
-    label: "Inmobiliaria / Alquileres",
     color: "var(--stamp-blue)",
-    title: "Sistema de Propiedades y Alquileres",
-    description:
-      "Ocupación, mantenimiento, cobros y vencimientos de contrato en un solo panel, para inmobiliarias y administradores de alquileres.",
     icon: Building,
     image: "/sistemas/propiedades.jpg",
   },
-];
+] as const;
 
 function SistemaPanel({
   href,
@@ -283,6 +211,7 @@ function SistemaPanel({
   image,
   onOpen,
 }: SistemaData & { onOpen: (demo: DemoModalData) => void }) {
+  const { t } = useLanguage();
   return (
     <button
       type="button"
@@ -310,7 +239,7 @@ function SistemaPanel({
         <h3>{title}</h3>
         <p>{description}</p>
         <div className="sistema-cta">
-          <span>Ver demo</span>
+          <span>{t.modales.verDemo}</span>
           <span className="arrow">→</span>
         </div>
       </div>
@@ -319,12 +248,26 @@ function SistemaPanel({
 }
 
 function SistemasSplit({ onOpen }: { onOpen: (demo: DemoModalData) => void }) {
+  const { t } = useLanguage();
   const shouldReduceMotion = useReducedMotion();
   const grid = (
     <div className="sistemas-split">
-      {SISTEMAS.map((sistema) => (
-        <SistemaPanel key={sistema.href} {...sistema} onOpen={onOpen} />
-      ))}
+      {SISTEMAS_META.map((meta) => {
+        const text = t.sistemas.items[meta.id];
+        return (
+          <SistemaPanel
+            key={meta.id}
+            href={meta.href}
+            color={meta.color}
+            icon={meta.icon}
+            image={meta.image}
+            label={text.label}
+            title={text.title}
+            description={text.description}
+            onOpen={onOpen}
+          />
+        );
+      })}
     </div>
   );
 
@@ -343,8 +286,20 @@ function SistemasSplit({ onOpen }: { onOpen: (demo: DemoModalData) => void }) {
 }
 
 function CatalogCarousel({ onOpen }: { onOpen: (demo: DemoModalData) => void }) {
+  const { t } = useLanguage();
   const shouldReduceMotion = useReducedMotion();
-  const carousel = <CatalogMarquee cards={CATALOG} onOpen={onOpen} />;
+  const cards: RuixenCardProps[] = CATALOG_META.map((meta) => {
+    const text = t.catalogo.items[meta.id];
+    return {
+      href: meta.href,
+      icon: meta.icon,
+      image: meta.image,
+      title: text.title,
+      subtitle: text.subtitle,
+      badge: { text: text.badge, variant: meta.variant },
+    };
+  });
+  const carousel = <CatalogMarquee cards={cards} onOpen={onOpen} />;
 
   if (shouldReduceMotion) return carousel;
 
@@ -360,72 +315,34 @@ function CatalogCarousel({ onOpen }: { onOpen: (demo: DemoModalData) => void }) 
   );
 }
 
-const AUTO_FEATURES: FeatureModalData[] = [
-  {
-    title: "Relevamiento",
-    icon: Route,
-    headline: "Un mapa claro de en qué se te va el tiempo",
-    before: "No sabés bien cuánto tiempo se va en tareas repetidas.",
-    after: "Un diagnóstico claro de qué automatizar primero.",
-    improves: [
-      "Un relevamiento de cómo trabaja tu equipo hoy, paso a paso.",
-      "Prioridad clara: qué conviene automatizar primero.",
-      "Diagnóstico sin compromiso, antes de gastar en nada.",
-    ],
-  },
-  {
-    title: "Chatbot IA",
-    icon: Bot,
-    headline: "Alguien atendiendo, aunque vos no estés",
-    before: "Contestás las mismas preguntas veinte veces por día.",
-    after: "El chatbot responde y toma pedidos las 24 horas.",
-    improves: [
-      "Responde consultas y toma pedidos a cualquier hora, incluso de madrugada.",
-      "Menos tiempo tuyo respondiendo lo mismo una y otra vez.",
-      "Deriva a una persona cuando la consulta lo necesita.",
-    ],
-  },
-  {
-    title: "Agenda automática",
-    icon: CalendarClock,
-    headline: "Turnos que se acomodan solos",
-    before: "Turnos coordinados a mano, con cruces y olvidos.",
-    after: "Agenda integrada a WhatsApp o al sitio, sin superposiciones.",
-    improves: [
-      "Turnos y reservas sin choques ni doble reserva.",
-      "Recordatorios automáticos que bajan el ausentismo.",
-      "Se integra a WhatsApp o a tu sitio, sin planillas sueltas.",
-    ],
-  },
-  {
-    title: "Automatización",
-    icon: RefreshCw,
-    headline: "Lo repetitivo, resuelto sin que lo pienses",
-    before: "Avisos y seguimientos que hacés uno por uno, a mano.",
-    after: "Se disparan solos, en el momento justo.",
-    improves: [
-      "Avisos y seguimientos que se disparan solos, en el momento justo.",
-      "Menos tareas manuales repetitivas para el equipo.",
-      "Todo queda registrado, sin depender de que alguien se acuerde.",
-    ],
-  },
-];
+const AUTO_META = [
+  { id: "relevamiento", icon: Route },
+  { id: "chatbot", icon: Bot },
+  { id: "agenda", icon: CalendarClock },
+  { id: "automatizacion", icon: RefreshCw },
+] as const;
 
 function AutoFeatureCard({
-  feature,
+  meta,
   onOpen,
 }: {
-  feature: FeatureModalData;
+  meta: (typeof AUTO_META)[number];
   onOpen: (feature: FeatureModalData) => void;
 }) {
-  const Icon = feature.icon;
+  const { t } = useLanguage();
+  const text = t.automatizaciones.features[meta.id];
+  const Icon = meta.icon;
   return (
-    <button type="button" className="auto-feature-card" onClick={() => onOpen(feature)}>
+    <button
+      type="button"
+      className="auto-feature-card"
+      onClick={() => onOpen({ ...text, icon: meta.icon })}
+    >
       <Icon className="auto-feature-icon" strokeWidth={1} aria-hidden="true" />
-      <h3>{feature.title}</h3>
-      <p className="auto-feature-teaser">{feature.after}</p>
+      <h3>{text.title}</h3>
+      <p className="auto-feature-teaser">{text.after}</p>
       <span className="auto-feature-link">
-        Ver más <span className="arrow">→</span>
+        {t.modales.verMas} <span className="arrow">→</span>
       </span>
     </button>
   );
@@ -435,8 +352,8 @@ function AutoFeatureGrid({ onOpen }: { onOpen: (feature: FeatureModalData) => vo
   const shouldReduceMotion = useReducedMotion();
   const grid = (
     <div className="feature-grid auto-grid grid grid-cols-1 divide-x divide-y divide-dashed border border-dashed sm:grid-cols-2">
-      {AUTO_FEATURES.map((feature) => (
-        <AutoFeatureCard key={feature.title} feature={feature} onOpen={onOpen} />
+      {AUTO_META.map((meta) => (
+        <AutoFeatureCard key={meta.id} meta={meta} onOpen={onOpen} />
       ))}
     </div>
   );
@@ -456,88 +373,25 @@ function AutoFeatureGrid({ onOpen }: { onOpen: (feature: FeatureModalData) => vo
 }
 
 const WHATSAPP_NUMBER = "5491173728937";
-const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-  "Hola! Vi la página y quiero hacer una consulta para mi negocio.",
-)}`;
-
 const CALENDAR_URL = "https://calendar.app.google/zB6YdjedCFZqJmwo6";
 
-const PARA_QUIEN_ES = [
-  "Atendés muchas consultas repetidas (precios, turnos, disponibilidad)",
-  "Coordinás turnos o pedidos a mano, por WhatsApp o papel",
-  "Cargás la misma información en más de un lugar",
-];
-
-const WORK_STEPS = [
-  {
-    title: "Diagnóstico inicial",
-    description: "Relevamos cómo trabaja tu equipo hoy, paso a paso.",
-  },
-  {
-    title: "Un sistema a la vez",
-    description: "Empezamos por el que genere mayor ahorro de tiempo.",
-  },
-  {
-    title: "Implementación y prueba",
-    description: "Lo ponemos a funcionar y lo probamos junto a tu equipo.",
-  },
-  {
-    title: "Capacitación breve",
-    description: "Para que todos sepan usarlo desde el primer día.",
-  },
-  {
-    title: "Ajuste y soporte",
-    description: "Acompañamos hasta que funcione como tiene que funcionar.",
-  },
-];
-
-const FAQ_ITEMS: FaqItem[] = [
-  {
-    question: "¿Cuánto tarda en estar lista mi página?",
-    answer:
-      "Depende del alcance, no hay un número único: una landing simple puede estar en pocos días, un sistema a medida lleva más. El plazo exacto se lo decimos en el diagnóstico inicial, cuando ya sabemos qué estamos construyendo.",
-  },
-  {
-    question: "¿Me podés pasar un precio sin hacer la consulta?",
-    answer:
-      "Prefiero no tirar un número al aire y después decepcionarte con la propuesta real. En 20 minutos entendemos tu caso y ahí sí te doy una cifra que se sostiene, sin sorpresas después.",
-  },
-  {
-    question: "¿El precio incluye hosting y dominio?",
-    answer:
-      "El dominio y el hosting corren por separado (son servicios de terceros, con costo anual bajo). Te ayudamos a contratarlos y configurarlos, no tenés que resolverlo solo.",
-  },
-  {
-    question: "¿Puedo pedir cambios después de la entrega?",
-    answer:
-      "Sí. Los primeros ajustes post-entrega están contemplados en el proyecto, y después podés sumar el mantenimiento mensual para cambios continuos sin tener que renegociar cada vez.",
-  },
-  {
-    question: "¿Tienen mantenimiento mensual?",
-    answer:
-      "Sí, es uno de los servicios del catálogo: cambios, contenido al día y que el sitio nunca se caiga. Vos avisás qué necesitás, nosotros lo resolvemos.",
-  },
-  {
-    question: "¿Pierdo el trato personal con mis clientes si automatizo algo?",
-    answer:
-      "Al revés: el chatbot o la agenda automática se ocupan de lo repetitivo (horarios, precios, turnos), y a vos te queda más tiempo para la atención que realmente necesita a una persona.",
-  },
-  {
-    question: "¿Qué pasa si no tengo fotos o contenido propio?",
-    answer:
-      "No pasa nada. Definimos juntos qué contenido hace falta y de dónde sacarlo en el diagnóstico inicial — no es algo que tengas que resolver antes de hablar con nosotros.",
-  },
-  {
-    question: "¿Cómo es la forma de pago?",
-    answer:
-      "Se coordina caso a caso después del presupuesto, según el tamaño del proyecto. Lo conversamos directo por WhatsApp o en la consulta, sin letra chica.",
-  },
-];
+const WORK_STEP_IDS = [
+  "diagnostico",
+  "unSistema",
+  "implementacion",
+  "capacitacion",
+  "ajuste",
+] as const;
 
 export default function App() {
+  const { t } = useLanguage();
   const [year] = useState(() => new Date().getFullYear());
   const [demo, setDemo] = useState<DemoModalData | null>(null);
   const [feature, setFeature] = useState<FeatureModalData | null>(null);
+
+  const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+    t.heroWaMessage,
+  )}`;
 
   return (
     <KineticGrid globalColor="monochrome">
@@ -550,13 +404,14 @@ export default function App() {
             </span>
           </a>
           <div className="header-ctas">
+            <LanguageSwitcher />
             <a
               className="btn btn-ghost"
-              href={WHATSAPP_URL}
+              href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
             >
-              WhatsApp
+              {t.header.whatsapp}
             </a>
             <a
               className="btn btn-ghost"
@@ -564,7 +419,7 @@ export default function App() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              Agendar
+              {t.header.agendar}
             </a>
           </div>
         </div>
@@ -572,26 +427,21 @@ export default function App() {
 
       <main id="top">
         <section className="hero wrap">
-          <p className="eyebrow">
-            Agencia de desarrollo web &amp; consultoría de procesos
-          </p>
+          <p className="eyebrow">{t.hero.eyebrow}</p>
           <h1>
-            Hacemos <em>visible</em> lo que tu negocio tiene para ofrecer
+            {t.hero.titlePre}
+            <em>{t.hero.titleEm}</em>
+            {t.hero.titlePost}
           </h1>
-          <p className="hero-sub">
-            Diseño y desarrollo de páginas, tiendas online y sistemas a
-            medida — y consultoría para ordenar y digitalizar procesos que
-            hoy se manejan a mano. Más abajo tenés el catálogo completo, con
-            demos reales que podés recorrer.
-          </p>
+          <p className="hero-sub">{t.hero.sub}</p>
           <div className="hero-ctas">
             <a
               className="btn btn-solid"
-              href={WHATSAPP_URL}
+              href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
             >
-              Contame tu negocio →
+              {t.hero.ctaSolid}
             </a>
             <a
               className="btn btn-ghost"
@@ -599,47 +449,37 @@ export default function App() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              Agendar consulta gratuita
+              {t.hero.ctaAgendar}
             </a>
             <a className="btn btn-ghost" href="#catalogo">
-              Ver el catálogo de demos
+              {t.hero.ctaCatalogo}
             </a>
           </div>
         </section>
 
         <section className="wrap" id="servicios">
           <div className="section-head">
-            <p className="section-num">01 — Servicios</p>
-            <h2>Lo que hacemos</h2>
-            <p className="section-note">
-              Desde una landing de una sola pantalla hasta un sistema con
-              login y base de datos. Se define según lo que tu negocio
-              necesita, no al revés.
-            </p>
+            <p className="section-num">{t.servicios.sectionNum}</p>
+            <h2>{t.servicios.title}</h2>
+            <p className="section-note">{t.servicios.note}</p>
           </div>
           <ServiceFeatureGrid />
         </section>
 
         <section className="wrap" id="catalogo">
           <div className="section-head">
-            <p className="section-num">02 — Catálogo</p>
-            <h2>Demos por rubro</h2>
-            <p className="section-note">
-              Cada ficha abre un sitio real y funcionando. Entrá, recorrelo,
-              y si algo se parece a lo que necesitás, hablamos.
-            </p>
+            <p className="section-num">{t.catalogo.sectionNum}</p>
+            <h2>{t.catalogo.title}</h2>
+            <p className="section-note">{t.catalogo.note}</p>
           </div>
           <CatalogCarousel onOpen={setDemo} />
         </section>
 
         <section className="wrap" id="sistemas">
           <div className="section-head">
-            <p className="section-num">03 — Sistemas a medida</p>
-            <h2>Recorré el sistema en vivo</h2>
-            <p className="section-note">
-              Esto no es una captura de pantalla: es la app real, funcionando.
-              Entrá y recorrela con datos de ejemplo.
-            </p>
+            <p className="section-num">{t.sistemas.sectionNum}</p>
+            <h2>{t.sistemas.title}</h2>
+            <p className="section-note">{t.sistemas.note}</p>
           </div>
           <SistemasSplit onOpen={setDemo} />
         </section>
@@ -647,18 +487,11 @@ export default function App() {
         <section className="wrap" id="automatizaciones">
           <div className="auto-panel">
             <div>
-              <p className="eyebrow">Consultoría de procesos</p>
-              <h2>Ordenamos el proceso antes de automatizarlo</h2>
-              <p>
-                Antes de sumar tecnología, miramos cómo trabaja tu equipo
-                hoy: dónde se pierde tiempo, qué se repite a mano, qué
-                información se cae entre un paso y otro. Después, si tiene
-                sentido, se resuelve con automatizaciones — y si hace falta
-                atención inmediata, con un chatbot con inteligencia
-                artificial.
-              </p>
+              <p className="eyebrow">{t.automatizaciones.eyebrow}</p>
+              <h2>{t.automatizaciones.title}</h2>
+              <p>{t.automatizaciones.intro}</p>
               <ul className="para-quien-list">
-                {PARA_QUIEN_ES.map((item) => (
+                {t.automatizaciones.paraQuienEs.map((item) => (
                   <li key={item} className="para-quien-item">
                     <Check size={16} aria-hidden="true" />
                     <span>{item}</span>
@@ -671,70 +504,63 @@ export default function App() {
 
           <div className="process-panel">
             <div className="work-steps">
-              <h3>Cómo trabajo</h3>
+              <h3>{t.automatizaciones.comoTrabajo}</h3>
               <ol>
-                {WORK_STEPS.map((step, index) => (
-                  <li className="work-step" key={step.title}>
-                    <span className="work-step-num mono">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-                    <div>
-                      <h4>{step.title}</h4>
-                      <p>{step.description}</p>
-                    </div>
-                  </li>
-                ))}
+                {WORK_STEP_IDS.map((id, index) => {
+                  const step = t.automatizaciones.workSteps[id];
+                  return (
+                    <li className="work-step" key={id}>
+                      <span className="work-step-num mono">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                      <div>
+                        <h4>{step.title}</h4>
+                        <p>{step.description}</p>
+                      </div>
+                    </li>
+                  );
+                })}
               </ol>
             </div>
 
             <div className="budget-note">
-              <h3>¿Y el presupuesto?</h3>
-              <p>
-                Depende de la cantidad de sistemas a implementar y de la
-                complejidad de cada uno. Por eso el presupuesto se entrega
-                después del diagnóstico inicial, no antes — así cotizamos lo
-                que realmente necesitás, ni de más ni de menos.
-              </p>
+              <h3>{t.automatizaciones.presupuestoTitle}</h3>
+              <p>{t.automatizaciones.presupuestoText}</p>
             </div>
           </div>
         </section>
 
         <section className="wrap" id="autodiagnostico">
           <div className="section-head">
-            <p className="section-num">04 — Autodiagnóstico</p>
-            <h2>¿Cuánto tiempo estás perdiendo?</h2>
-            <p className="section-note">
-              Respondé estas cuatro preguntas y te decimos, en horas, cuánto
-              podrías estar ahorrando.
-            </p>
+            <p className="section-num">{t.autodiagnostico.sectionNum}</p>
+            <h2>{t.autodiagnostico.title}</h2>
+            <p className="section-note">{t.autodiagnostico.note}</p>
           </div>
           <AutodiagnosticoForm whatsappNumber={WHATSAPP_NUMBER} />
         </section>
 
         <section className="wrap" id="faq">
           <div className="section-head">
-            <p className="section-num">05 — Preguntas frecuentes</p>
-            <h2>Antes de escribirnos</h2>
-            <p className="section-note">
-              Las dudas más comunes antes de arrancar un proyecto.
-            </p>
+            <p className="section-num">{t.faq.sectionNum}</p>
+            <h2>{t.faq.title}</h2>
+            <p className="section-note">{t.faq.note}</p>
           </div>
-          <FaqAccordion items={FAQ_ITEMS} />
+          <FaqAccordion items={t.faq.items} />
         </section>
 
         <section className="wrap cta-block">
           <div>
-            <p className="section-num">06 — Contacto</p>
-            <h2>Contanos tu idea y nosotros armamos tu sistema.</h2>
+            <p className="section-num">{t.ctaFinal.sectionNum}</p>
+            <h2>{t.ctaFinal.title}</h2>
           </div>
           <div className="cta-actions">
             <a
               className="btn btn-solid"
-              href={WHATSAPP_URL}
+              href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
             >
-              Escribinos por WhatsApp →
+              {t.ctaFinal.ctaWhatsapp}
             </a>
             <a
               className="btn btn-ghost"
@@ -742,7 +568,7 @@ export default function App() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              Agendar consulta gratuita (20 min) →
+              {t.ctaFinal.ctaAgendar}
             </a>
           </div>
         </section>
@@ -750,14 +576,14 @@ export default function App() {
 
       <footer className="wrap">
         <div className="footer-row">
-          <span>FJORA LABS — DESARROLLO WEB &amp; CONSULTORÍA DE PROCESOS</span>
+          <span>{t.footer}</span>
           <span>© {year}</span>
         </div>
       </footer>
 
       <div className="floating-actions">
         <CalendarBubble href={CALENDAR_URL} />
-        <WhatsappBubble href={WHATSAPP_URL} />
+        <WhatsappBubble href={whatsappUrl} />
       </div>
 
       <DemoModal

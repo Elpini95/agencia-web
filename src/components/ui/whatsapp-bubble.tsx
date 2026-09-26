@@ -1,11 +1,14 @@
+import { useLanguage } from "@/i18n/LanguageContext";
+
 export default function WhatsappBubble({ href }: { href: string }) {
+  const { t } = useLanguage();
   return (
     <a
       className="bubble-btn bubble-btn--whatsapp"
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label="Hablar por WhatsApp"
+      aria-label={t.modales.ariaWhatsapp}
     >
       <svg viewBox="0 0 32 32" aria-hidden="true">
         <path

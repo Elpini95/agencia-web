@@ -69,6 +69,8 @@ header{
   display:flex;
   align-items:center;
   justify-content:space-between;
+  flex-wrap:wrap;
+  row-gap:8px;
   gap:16px;
   padding:14px 0;
 }
@@ -129,10 +131,38 @@ header{
 .btn-solid:hover{ background:color-mix(in srgb, var(--celeste) 85%, white); }
 .btn-ghost:hover{ background:var(--ink); color:var(--paper); }
 .header-row .btn{ padding:9px 14px; font-size:12px; }
-.header-ctas{ display:flex; align-items:center; gap:8px; }
+.header-ctas{ display:flex; align-items:center; flex-wrap:wrap; justify-content:flex-end; gap:8px; }
+
+.lang-switcher{
+  display:flex;
+  align-items:center;
+  border:1.5px solid var(--line-strong);
+  border-radius:3px;
+  overflow:hidden;
+  margin-right:2px;
+}
+.lang-switcher-btn{
+  appearance:none;
+  border:none;
+  background:transparent;
+  color:var(--ink-soft);
+  font-family:"IBM Plex Mono", monospace;
+  font-weight:600;
+  font-size:11px;
+  letter-spacing:0.03em;
+  padding:8px 9px;
+  cursor:pointer;
+  transition:background .15s ease, color .15s ease;
+}
+.lang-switcher-btn + .lang-switcher-btn{ border-left:1px solid var(--line-strong); }
+.lang-switcher-btn:hover{ background:color-mix(in srgb, var(--ink) 12%, transparent); color:var(--ink); }
+.lang-switcher-btn--active{ background:var(--celeste); color:var(--marino); }
+.lang-switcher-btn--active:hover{ background:var(--celeste); color:var(--marino); }
+
 @media (max-width: 400px){
   .header-row .btn{ padding:8px 10px; font-size:10.5px; }
   .header-ctas{ gap:6px; }
+  .lang-switcher-btn{ padding:7px 6px; font-size:10px; }
 }
 
 /* ---------- hero ---------- */

@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Check, X } from "lucide-react";
+import { useLanguage } from "@/i18n/LanguageContext";
 
 export type FeatureModalData = {
   title: string;
@@ -35,11 +36,13 @@ export default function FeatureModal({
     };
   }, [feature, onClose]);
 
+  const { t } = useLanguage();
+
   if (!feature) return null;
 
   const Icon = feature.icon;
   const waUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
-    `Hola! Vi lo de ${feature.title} y quiero esto para mi negocio.`,
+    t.modales.featureWaTemplate(feature.title),
   )}`;
 
   return (
@@ -55,7 +58,7 @@ export default function FeatureModal({
           type="button"
           className="feature-modal-close"
           onClick={onClose}
-          aria-label="Cerrar"
+          aria-label={t.modales.ariaCerrar}
         >
           <X size={18} aria-hidden="true" />
         </button>
@@ -68,17 +71,17 @@ export default function FeatureModal({
 
         <div className="auto-before-after">
           <div className="auto-feature-row">
-            <span className="tag tag--antes">Antes</span>
+            <span className="tag tag--antes">{t.modales.antes}</span>
             <p>{feature.before}</p>
           </div>
           <div className="auto-feature-row">
-            <span className="tag tag--despues">Después</span>
+            <span className="tag tag--despues">{t.modales.despues}</span>
             <p>{feature.after}</p>
           </div>
         </div>
 
         <div className="feature-modal-improves">
-          <p className="mono feature-modal-label">Lo que mejora</p>
+          <p className="mono feature-modal-label">{t.modales.loQueMejora}</p>
           <ul>
             {feature.improves.map((item) => (
               <li key={item}>
@@ -91,10 +94,10 @@ export default function FeatureModal({
 
         <div className="feature-modal-footer">
           <a className="btn btn-solid" href={waUrl} target="_blank" rel="noopener noreferrer">
-            Quiero esto en mi negocio →
+            {t.modales.quieroEsto}
           </a>
           <button type="button" className="btn btn-ghost" onClick={onClose}>
-            Cerrar y volver
+            {t.modales.cerrarVolver}
           </button>
         </div>
       </div>

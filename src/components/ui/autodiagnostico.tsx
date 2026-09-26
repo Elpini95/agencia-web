@@ -1,45 +1,15 @@
 import { useState } from "react";
-
-type DiagOption = { label: string; hours: number };
-
-type DiagQuestion = {
-  text: string;
-  options: DiagOption[];
-};
-
-const SCALE: DiagOption[] = [
-  { label: "Casi nada (0-1h)", hours: 0.5 },
-  { label: "Un rato (2-4h)", hours: 3 },
-  { label: "Bastante (5-8h)", hours: 6.5 },
-  { label: "Un montón (+8h)", hours: 10 },
-];
-
-const QUESTIONS: DiagQuestion[] = [
-  {
-    text: "¿Cuántas horas por semana perdés respondiendo las mismas preguntas por WhatsApp (precios, horarios, disponibilidad)?",
-    options: SCALE,
-  },
-  {
-    text: "¿Cuánto tiempo te lleva armar presupuestos o cotizaciones a mano?",
-    options: SCALE,
-  },
-  {
-    text: "¿Cuánto tiempo se va en coordinar turnos, pedidos o reservas manualmente?",
-    options: SCALE,
-  },
-  {
-    text: "¿Cuánto tiempo dedicás a cargar o actualizar la misma información en varios lugares (stock, redes, planillas)?",
-    options: SCALE,
-  },
-];
+import { useLanguage } from "@/i18n/LanguageContext";
 
 export default function AutodiagnosticoForm({
   whatsappNumber,
 }: {
   whatsappNumber: string;
 }) {
+  const { t } = useLanguage();
+  const { scale, questions } = t.autodiagnostico;
   const [answers, setAnswers] = useState<(number | null)[]>(
-    QUESTIONS.map(() => null),
+    questions.map(() => null),
   );
 
   const allAnswered = answers.every((a) => a !== null);
@@ -47,8 +17,9 @@ export default function AutodiagnosticoForm({
     ? answers.reduce((sum, h) => sum + (h ?? 0), 0)
     : 0;
 
-  const resultMessage = `Hola! Hice el autodiagnóstico de la web y estimo que pierdo unas ${total} horas por semana en tareas manuales. Quiero que revisemos mi caso.`;
-  const resultUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(resultMessage)}`;
+  const resultUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
+    t.autodiagnostico.waTemplate(total),
+  )}`;
 
   function selectAnswer(questionIndex: number, hours: number) {
     setAnswers((prev) => {
@@ -60,11 +31,11 @@ export default function AutodiagnosticoForm({
 
   return (
     <div className="diag-card">
-      {QUESTIONS.map((question, qi) => (
-        <div className="diag-question" key={question.text}>
-          <p>{question.text}</p>
+      {questions.map((question, qi) => (
+        <div className="diag-question" key={question}>
+          <p>{question}</p>
           <div className="diag-options">
-            {question.options.map((option) => (
+            {scale.map((option) => (
               <button
                 key={option.label}
                 type="button"
@@ -85,9 +56,15 @@ export default function AutodiagnosticoForm({
       {allAnswered && (
         <div className="diag-result">
           <p>
-            Estás perdiendo unas <strong>{total} horas por semana</strong> en
-            tareas que se podrían automatizar. Eso es cerca de{" "}
-            <strong>{total * 4} horas al mes</strong>.
+            {t.autodiagnostico.resultPre}{" "}
+            <strong>
+              {total} {t.autodiagnostico.resultHoursWeek}
+            </strong>{" "}
+            {t.autodiagnostico.resultMid}{" "}
+            <strong>
+              {total * 4} {t.autodiagnostico.resultHoursMonth}
+            </strong>
+            .
           </p>
           <a
             className="btn btn-solid"
@@ -95,7 +72,7 @@ export default function AutodiagnosticoForm({
             target="_blank"
             rel="noopener noreferrer"
           >
-            Contame tu caso por WhatsApp →
+            {t.autodiagnostico.ctaWhatsapp}
           </a>
         </div>
       )}

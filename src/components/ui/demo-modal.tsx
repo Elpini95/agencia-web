@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { ExternalLink, X } from "lucide-react";
+import { useLanguage } from "@/i18n/LanguageContext";
 
 export type DemoModalData = {
   title: string;
@@ -31,10 +32,12 @@ export default function DemoModal({
     };
   }, [demo, onClose]);
 
+  const { t } = useLanguage();
+
   if (!demo) return null;
 
   const waUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
-    `Hola! Vi la demo de ${demo.title} y quiero algo así para mi negocio.`,
+    t.modales.demoWaTemplate(demo.title),
   )}`;
 
   return (
@@ -52,19 +55,19 @@ export default function DemoModal({
             <span />
             <span />
           </div>
-          <p className="demo-modal-title mono">FJORA · Demo de {demo.title}</p>
+          <p className="demo-modal-title mono">FJORA · Demo: {demo.title}</p>
           <button
             type="button"
             className="demo-modal-close"
             onClick={onClose}
-            aria-label="Cerrar demo"
+            aria-label={t.modales.ariaCerrarDemo}
           >
             <X size={16} aria-hidden="true" />
           </button>
         </div>
 
         <div className="demo-modal-frame">
-          <iframe src={demo.url} title={`Demo de ${demo.title}`} loading="lazy" />
+          <iframe src={demo.url} title={`Demo: ${demo.title}`} loading="lazy" />
         </div>
 
         <div className="demo-modal-footer">
@@ -75,10 +78,10 @@ export default function DemoModal({
             rel="noopener noreferrer"
           >
             <ExternalLink size={15} aria-hidden="true" />
-            Abrir en pestaña nueva
+            {t.modales.abrirPestana}
           </a>
           <a className="btn btn-solid" href={waUrl} target="_blank" rel="noopener noreferrer">
-            Quiero esto en mi negocio →
+            {t.modales.quieroEsto}
           </a>
         </div>
       </div>

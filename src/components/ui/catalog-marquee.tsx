@@ -1,4 +1,5 @@
 import type { DemoModalData } from "./demo-modal";
+import { useLanguage } from "@/i18n/LanguageContext";
 
 export interface RuixenCardProps {
   title: string;
@@ -26,6 +27,7 @@ function MarqueeCard({
   card: RuixenCardProps;
   onOpen: (demo: DemoModalData) => void;
 }) {
+  const { t } = useLanguage();
   const accent = card.badge ? variantColors[card.badge.variant] : "var(--celeste)";
   const Icon = card.icon;
 
@@ -67,7 +69,7 @@ function MarqueeCard({
         <h3>{card.title}</h3>
         <p>{card.subtitle}</p>
         <div className="marquee-card-cta">
-          <span>Ver demo</span>
+          <span>{t.modales.verDemo}</span>
           <span className="arrow">→</span>
         </div>
       </div>
